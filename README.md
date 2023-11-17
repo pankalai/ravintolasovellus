@@ -26,10 +26,10 @@ schema.sql (psql < schema.sql)
 
 Tietokannan rakenteen luonnin yhteydessä luodaan kaksi käyttäjää:
 
-Peruskäyttäjä <br>
+Käyttäjä <br>
 tunnus: user <br>
 salasana: user
 
-Admin-käyttäjä <br>
+Ylläpitäjä <br>
 tunnus: admin <br>
 salasana: admin

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/style.css"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+
+    <title>Ravintolat - {% block title %}{% endblock %}</title>
+
+    <nav>
+        <a href="/">Etusivu</a>
+        <a href="/restaurants">Ravintolat</a>
+        <a href="/ratings">Arviot</a> 
+
+        {% if session.get("admin", False) %}
+            <a href="/categories">Ryhmät</a> 
+        {% endif %}
+
+        {% if session.get("username", None) is none %}
+            | <a href="/login">Kirjaudu</a>
+            <a href="/register">Rekisteröidy</a>
+        {% else %}
+            | {{ session.get("username") }}
+            <a href="/logout">Kirjaudu ulos</a>
+        {% endif %}
+    </nav>
+
+    <div style="height:75%;">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+
+</body>

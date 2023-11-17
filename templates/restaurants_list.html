@@ -1,0 +1,48 @@
+{% extends "restaurants.html" %}
+{% block content %}
+{{ super() }}
+
+<form action="/restaurants/search" method="POST" style="float: left;"> 
+    <!-- Kategoria: 
+    <select name="category">
+        <option value="sushi">Sushi</option>
+        <option value="indian">Intialainen</option>
+    </select> -->
+    Kaupunki: <input type="text" name="city">
+    Hakusana: <input type="text" name="description">
+    <input type="submit" value="Hae" style="width:50px;">
+</form>
+<form action="/restaurants" method="GET">
+    <input type="submit" value="Poista rajaukset" style="margin-left: 10px;">
+</form>
+<br>
+<hr>
+<table>
+<col width="250px">
+<col width="250px">
+<col width="500px">
+<tr>
+    <th align="left">Ravintola</th>
+    <th align="left">Osoite</th>
+    <th align="left">Aukioloajat</th>
+</tr>
+
+{% for r in restaurants %}
+<tr>
+    <td><a href="/restaurants/{{ r.id }}">{{ r.name }}</a></td>
+    <td>{{ r.location.street }}, {{ r.location.city }}</td>
+    <td>{{ r.opening_hours }}</td>
+    <td>
+        {% if session.get("username", None) is not none %}
+        <a href="/ratings/new/{{ r.id }}">Arvostele</a>
+        {% endif %}
+    </td>  
+    <td>
+        {% if session.get("admin", False) %}
+        <a href="/restaurants/{{ r.id }}/edit">Muokkaa</a>
+        {% endif %}
+    </td>  
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

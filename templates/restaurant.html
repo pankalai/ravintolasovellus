@@ -1,0 +1,14 @@
+{% extends "restaurants.html" %}
+{% block content %}
+
+{{ super() }}
+
+
+
+
+<p>{{ restaurant.name }}</p>
+<p><i>{{ restaurant.description }}</i></p>
+<p>{{ restaurant.opening_hours }}</p>
+<br>
+<a href="/restaurants">Takaisin</a>
+{% endblock %}

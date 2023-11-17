@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+<h2>Arviot</h2>
+<form action="/ratings/search" method="POST" style="float: left;"> 
+    <!-- Kategoria: 
+    <select name="category">
+        <option value="sushi">Sushi</option>
+        <option value="indian">Intialainen</option>
+    </select> -->
+    Kaupunki: <input type="text" name="city">
+    <input type="submit" value="Hae" style="width:50px;">
+</form>
+<form action="/ratings" method="GET">
+    <input type="submit" value="Poista rajaukset" style="margin-left: 10px;">
+</form>
+<br>
+<hr>
+<table>
+    <col width="250px">
+    <col width="100px">
+    <col width="100px">
+    <col width="100px">
+    <tr>
+    <th align="left">Ravintola</th>
+    <th align="left">Kaupunki</th>
+    <th align="left">Lukumäärä</th>
+    <th align="center">Keskiarvo</th>
+    </tr>
+    {% for r in ratings %}
+    <tr>
+        <td>{{ r.name }}</td>
+        <td>{{ r.location.city }}</td>
+        <td align="center">{{ r.count }}</td>
+        <td align="center">{{ '%0.1f'| format(r.average|float) }}</td>
+        <td><a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a></td>  
+        <td>
+            {% if session.get("username", None) is not none %}
+            <a href="/ratings/new/{{ r.id }}">Arvostele</a>
+            {% endif %}
+        </td>  
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

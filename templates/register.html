@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Kirjautuminen{% endblock %}
+{% block content %}
+<h2>Rekisteröidy</h2>
+
+    <form action="/register" method="POST">
+    <p>
+        <label style="width:75px;float: left;">Tunnus:</label><br>
+        <input type="text" name="username">
+    </p>
+    <p>
+        <div>Salasana:</div>
+        <input type="password" name="password1">
+        <div style="margin-top:5px;">Salasana uudestaan:</div>
+        <input type="password" name="password2">
+    </p>
+    <p>
+        <input type="submit" value="Rekisteröidy" style="width:158px;">
+    </p>
+    </form>
+
+{% endblock %}

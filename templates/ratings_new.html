@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{{ super() }}
+<form action="/ratings/send" method="POST">
+    <p>
+        <h3>{{ restaurant.name}}</h3>
+    </p>
+    <p>
+        {{ restaurant.location.street}}<br>
+        {{ restaurant.location.zip}}<br>
+        {{ restaurant.location.city}}
+    </p>
+    
+    <p>
+        <h4>Arvosana</h4>
+        <input type="radio" name="stars" value="1">1
+        <input type="radio" name="stars" value="2">2
+        <input type="radio" name="stars" value="3">3
+        <input type="radio" name="stars" value="4">4
+        <input type="radio" name="stars" value="5">5
+    </p>
+    <p>
+        <h4>Kommentti</h4>
+        <textarea name="comment" rows="5" cols="50"></textarea>
+    </p>
+    <input type="hidden" name="id" value="{{ restaurant.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="submit" value="Lähetä">
+</form>
+<br>
+<a href="{{ session['previous_url'] }}">Takaisin</a> 
+
+{% endblock %}

@@ -10,5 +10,5 @@
 <p><i>{{ restaurant.description }}</i></p>
 <p>{{ restaurant.opening_hours }}</p>
 <br>
-<a href="/restaurants">Takaisin</a>
+<a href="{{ session['previous_url'] }}">Takaisin</a> 
 {% endblock %}

@@ -29,7 +29,7 @@
     </tr>
     {% for r in ratings %}
     <tr>
-        <td>{{ r.name }}</td>
+        <td><a href="restaurants/{{ r.id }}">{{ r.name }}</a></td>
         <td>{{ r.location.city }}</td>
         <td align="center">{{ r.count }}</td>
         <td align="center">{{ '%0.1f'| format(r.average|float) }}</td>

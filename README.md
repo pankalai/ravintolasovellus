@@ -41,3 +41,6 @@ salasana: admin
 DATABASE_URL  
 SECRET_KEY
 
+## Käynnistys
+flask run
+

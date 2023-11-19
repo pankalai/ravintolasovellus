@@ -3,7 +3,7 @@
 
 {{ super() }}
 
-<form action="/restaurant/{{ restaurant.id }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
+<form action="/restaurants/{{ restaurant.id }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="submit" value="Poista">
 </form>
@@ -27,10 +27,10 @@
         <h4>Aukioloajat</h4>
         <textarea name="opening_hours" rows="6" cols="25">{{ restaurant.opening_hours }}</textarea>
     </p>
-    <p>
+    <!-- <p>
         <h4>Kuva</h4>
         <input name="file" type="file">
-    </p>
+    </p> -->
     <br>
     <input type="hidden" name="id" value="{{ restaurant.id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">

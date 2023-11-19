@@ -120,11 +120,13 @@ def show_restaurant(restaurant_id):
 
 @app.route("/restaurants/<int:restaurant_id>/edit")
 def edit_restaurant(restaurant_id):
+    if not users.admin():
+        abort(403)
     res = db.get_restaurant(restaurant_id)
     return render_template("restaurant_edit.html", restaurant=res)
 
 
-@app.route("/restaurant/<int:restaurant_id>/delete", methods=["POST"])
+@app.route("/restaurants/<int:restaurant_id>/delete", methods=["POST"])
 def restaurant_delete(restaurant_id):
     if session["csrf_token"] != request.form["csrf_token"] or not users.admin():
         abort(403)

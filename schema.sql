@@ -69,4 +69,3 @@ CREATE TABLE images (
 ); 
 
 INSERT INTO users (username,password,admin,created) values ('admin','scrypt:32768:8:1$UVpsTmlX8uy8o9N3$0632e6ac194d1e32ca62ae3786fa73c85207f06947cc922a2c36dc106e8ec3ff1b14e806842af38f0678ff559ca66a642de2481607fbd07ea23ecbf45e104690',true, now());
-INSERT INTO users (username,password,admin,created) values ('user','scrypt:32768:8:1$0FzG9yArxzL5krp2$52613cae8b3bcd3a40dc9d5352a27af65f0ef0c9ec61aea6f961961ccb4dc447e9b562dea2e68e73adefe8f2eb49f8858c7e467714f6b5413e2d4a397462cfcd',false, now());

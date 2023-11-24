@@ -1,3 +1,4 @@
+import json
 from os import getenv
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
@@ -69,6 +70,9 @@ def update_restaurant(restaurant_id, name, description, location, opening_hours)
     modified = now()
     WHERE id = :restaurant_id"""
 
+    if type(location) is dict:
+        location = json.dumps(location, indent=4)
+        
     db.session.execute(
         text(sql),
         {

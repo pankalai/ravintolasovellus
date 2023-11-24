@@ -1,8 +1,9 @@
-import json
 from flask import render_template, redirect, request, url_for, session, abort
+from flask_googlemaps import Map
 from app import app
 import users
 import db
+import map
 
 
 @app.route("/")
@@ -60,7 +61,17 @@ def restaurants(list_type):
         res = sorted(res, key=lambda r: r.name)
         session["previous_url"] = url_for("restaurant")
         return render_template("restaurants_list.html", restaurants=res)
-    return render_template("restaurants_" + list_type + ".html")
+    map.create_markers()
+    if list_type == "map":
+        markers = map.create_markers()
+        print(markers)
+        user_coordinates = map.get_user_coordinates()
+        return render_template(
+            "restaurants_map.html",
+            user_lat=user_coordinates[0],
+            user_lon=user_coordinates[1],
+            markers=markers,
+        )
 
 
 @app.route("/restaurants/search", methods=["POST"])
@@ -91,14 +102,14 @@ def restaurant_send():
             restaurant_id,
             name,
             description,
-            json.dumps(location, indent=4),
+            location,
             opening_hours,
         )
     else:
         db.add_restaurant(
             name,
             description,
-            json.dumps(location, indent=4),
+            location,
             opening_hours,
         )
     return redirect("/restaurants/list")
@@ -116,6 +127,13 @@ def show_ratings(restaurant_id):
 def show_restaurant(restaurant_id):
     res = db.get_restaurant(restaurant_id)
     return render_template("restaurant.html", restaurant=res)
+
+
+@app.route("/restaurants/new")
+def add_restaurant():
+    if not users.admin():
+        abort(403)
+    return render_template("restaurants_new.html")
 
 
 @app.route("/restaurants/<int:restaurant_id>/edit")

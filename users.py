@@ -2,6 +2,7 @@ from secrets import token_hex
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 import db
+import re
 
 
 def login(username, password):
@@ -45,3 +46,17 @@ def current_user():
 
 def admin():
     return session.get("admin", False)
+
+
+def password_valid(password):
+    # reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,20}$"
+    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$"
+
+    pattern = re.compile(reg)
+    valid = re.search(pattern, password)
+
+    # validating conditions
+    if valid:
+        return True
+    else:
+        return False

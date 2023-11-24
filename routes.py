@@ -39,10 +39,21 @@ def register():
         password1 = request.form["password1"]
         password2 = request.form["password2"]
         if password1 != password2:
-            return render_template("error.html", message="Salasanat eroavat")
+            return render_template(
+                "register.html",
+                notice="Salasanat eroavat",
+            )
+        if not users.password_valid(password1):
+            return render_template(
+                "register.html",
+                notice="Salasanan tulee täyttää seuraavat ehdot<br><ul><li>Yksi pieni kirjain</li><li>Yksi iso kirjain</li><li>Yksi numero</li><li>Pituus vähintään 8 ja korkeintaan 20</li></ul>",
+            )
         if users.register(username, password1):
             return redirect("/")
-        return render_template("error.html", message="Rekisteröinti ei onnistunut")
+        return render_template(
+            "register.html",
+            notice="Rekisteröinti ei onnistunut. Yritä myöhemmin uudelleen.",
+        )
     return render_template("register.html")
 
 
@@ -64,7 +75,6 @@ def restaurants(list_type):
     map.create_markers()
     if list_type == "map":
         markers = map.create_markers()
-        print(markers)
         user_coordinates = map.get_user_coordinates()
         return render_template(
             "restaurants_map.html",

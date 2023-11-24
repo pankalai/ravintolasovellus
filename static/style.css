@@ -9,4 +9,8 @@ nav {
     margin-bottom: 2em;
 }
 
+.error {
+    color: red;
+}
+
 #map {height: 100%;width: 100vw;}

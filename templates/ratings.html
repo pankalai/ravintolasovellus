@@ -16,11 +16,11 @@
 </form>
 <br>
 <hr>
-<table>
-    <col width="250px">
-    <col width="100px">
-    <col width="100px">
-    <col width="100px">
+<table width="100%">
+    <col width="33%">
+    <col width="15%">
+    <col width="10%">
+    <col width="10%">
     <tr>
     <th align="left">Ravintola</th>
     <th align="left">Kaupunki</th>
@@ -33,9 +33,10 @@
         <td>{{ r.location.city }}</td>
         <td align="center">{{ r.count }}</td>
         <td align="center">{{ '%0.1f'| format(r.average|float) }}</td>
-        <td><a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a></td>  
-        <td>
-            {% if session.get("username", None) is not none %}
+        <td style="text-align: right;">
+            <a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a>
+            &nbsp;
+            {% if session.get("username", None) %}
             <a href="/ratings/new/{{ r.id }}">Arvostele</a>
             {% endif %}
         </td>  

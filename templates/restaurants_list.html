@@ -17,10 +17,11 @@
 </form>
 <br>
 <hr>
-<table>
-<col width="250px">
-<col width="250px">
-<col width="500px">
+
+<table width="100%">
+<col width="25%">
+<col width="25%">
+<col width="30%">
 <tr>
     <th align="left">Ravintola</th>
     <th align="left">Osoite</th>
@@ -32,12 +33,11 @@
     <td><a href="/restaurants/{{ r.id }}">{{ r.name }}</a></td>
     <td>{{ r.location.street }}, {{ r.location.city }}</td>
     <td>{{ r.opening_hours }}</td>
-    <td>
+    <td style="text-align: right;">
         {% if session.get("username", None) is not none %}
         <a href="/ratings/new/{{ r.id }}">Arvostele</a>
         {% endif %}
-    </td>  
-    <td>
+        &nbsp;
         {% if session.get("admin", False) %}
         <a href="/restaurants/{{ r.id }}/edit">Muokkaa</a>
         {% endif %}

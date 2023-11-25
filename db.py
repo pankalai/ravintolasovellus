@@ -34,7 +34,7 @@ def add_restaurant(name, description, location, opening_hours):
 
 def get_restaurants(category="", city="", description=""):
     data = {}
-    sql = "SELECT * FROM restaurants WHERE visible = true"
+    sql = "SELECT id,name, description, location, opening_hours FROM restaurants WHERE visible = true"
 
     if category:
         pass
@@ -58,7 +58,7 @@ def get_restaurants(category="", city="", description=""):
 
 
 def get_restaurant(restaurant_id):
-    sql = "SELECT * FROM restaurants WHERE id = :id"
+    sql = "SELECT id, name, description, location, opening_hours FROM restaurants WHERE id = :id"
     result = db.session.execute(text(sql), {"id": restaurant_id})
     return result.fetchone()
 

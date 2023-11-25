@@ -3,8 +3,8 @@
 
 {{ super() }}
 
-{% if restaurant %}
-<form action="/restaurants/{{ restaurant.id }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
+{% if restaurant.get('id') %}
+<form action="/restaurants/{{ restaurant['id'] }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="submit" value="Poista">
 </form>
@@ -13,7 +13,7 @@
 <form action="/restaurant/send" method="POST">
     <p>
         <h4>Nimi</h4>
-        <input type="text" name="name" value = "{% if restaurant %}{{restaurant.name}}{% endif %}" required><br>
+        <input type="text" name="name" value = "{% if restaurant %}{{restaurant['name']}}{% endif %}" required><br>
     </p>
     <p>
         <h4>Kuvaus</h4>
@@ -22,30 +22,30 @@
     <p>
         <h4>Sijainti</h4>
         <label style="width:100px;float: left;">Katuosoite:</label>
-        <input type="text" name="street" value="{% if restaurant %}{{ restaurant.location.street }}{% endif %}" required>
+        <input type="text" name="street" value="{% if restaurant %}{{ restaurant['location']['street'] }}{% endif %}" required>
         <br>
         <label style="width:100px;float: left;">Postinumero:</label>
-        <input type="text" name="zip" value="{% if restaurant %}{{ restaurant.location.zip }}{% endif %}" required>
+        <input type="text" name="zip" value="{% if restaurant %}{{ restaurant['location']['zip'] }}{% endif %}" required>
         <br>
         <label style="width:100px;float: left;">Kaupunki:</label>
-        <input type="text" name="city" value="{% if restaurant %}{{ restaurant.location.city }}{% endif %}" required>
+        <input type="text" name="city" value="{% if restaurant %}{{ restaurant['location']['city'] }}{% endif %}" required>
         <br>
     </p>
     <p>
         <h4>Aukioloajat</h4>
-        <textarea name="opening_hours" rows="6" cols="25" required>{% if restaurant%}{{ restaurant.opening_hours }} {% endif %}</textarea>
+        <textarea name="opening_hours" rows="6" cols="25" required>{% if restaurant%}{{ restaurant.opening_hours }}{% endif %}</textarea>
     </p>
     <!-- <p>
         <h4>Kuva</h4>
         <input name="file" type="file">
     </p> -->
-    <input type="hidden" name="id" value="{% if restaurant%}{{ restaurant.id }}{% else %}None{% endif %}">
+    <input type="hidden" name="id" value="{{ restaurant.get('id') }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="old_info" value="{{ restaurant }}">
     {% if notice %}
         <p><div class="error">{{ notice }}</div></p>
     {% endif %}
-    <input type="submit" id="submit" value="{% if restaurant%}Päivitä{% else %}Lähetä{% endif %}">
+    <input type="submit" id="submit" value="{% if restaurant %}Päivitä{% else %}Lähetä{% endif %}">
 </form>   
 <br>
 

@@ -90,7 +90,10 @@ def get_user_coordinates():
 
 
 def split_address_to_street_and_housenumber(address):
-    m = re.search(r"\d", address).start()
-    street = address[:m].rstrip()
-    housenumber = address[m:].split(" ")[0]
-    return (street, housenumber)
+    try:
+        m = re.search(r"\d", address).start()
+        street = address[:m].rstrip()
+        housenumber = address[m:].split(" ")[0]
+        return street, housenumber
+    except:
+        return None, None

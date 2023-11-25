@@ -1,0 +1,44 @@
+{% extends "restaurants.html" %}
+{% block content %}
+
+{{ super() }}
+
+{% if restaurant%}
+<form action="/restaurants/{{ restaurant.id }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="submit" value="Poista">
+</form>
+{% endif %}
+
+<form action="/restaurant/send" method="POST">
+    <p>
+        <h4>Nimi</h4>
+        <input type="text" name="name" value = "{% if restaurant%}{{restaurant.name}}{% endif %}"><br>
+    </p>
+    <p>
+        <h4>Kuvaus</h4>
+        <textarea name="description" rows="2" cols="50">{% if restaurant%}{{ restaurant.description }}{% endif %}</textarea><br>
+    </p>
+    <p>
+        <h4>Sijainti</h4>
+        <label style="width:100px;float: left;">Katuosoite:</label><input type="text" name="street" value="{% if restaurant%}{{ restaurant.location.street }}{% endif %}"><br>
+        <label style="width:100px;float: left;">Postinumero:</label> <input type="text" name="zip" value="{% if restaurant%}{{ restaurant.location.zip }}{% endif %}"><br>
+        <label style="width:100px;float: left;">Kaupunki:</label> <input type="text" name="city" value="{% if restaurant%}{{ restaurant.location.city }}{% endif %}"><br>
+    </p>
+    <p>
+        <h4>Aukioloajat</h4>
+        <textarea name="opening_hours" rows="6" cols="25">{% if restaurant%}{{ restaurant.opening_hours }} {% endif %}</textarea>
+    </p>
+    <!-- <p>
+        <h4>Kuva</h4>
+        <input name="file" type="file">
+    </p> -->
+    <br>
+    <input type="hidden" name="id" value="{% if restaurant%}{{ restaurant.id }}{% else %}None{% endif %}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="submit" value="{% if restaurant%}Päivitä{% else %}Lähetä{% endif %}">
+</form>   
+<br>
+
+<a href="/restaurants">Takaisin</a>
+{% endblock %}

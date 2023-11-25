@@ -16,6 +16,9 @@ def add_restaurant(name, description, location, opening_hours):
     sql = """INSERT INTO restaurants (name, description, location, opening_hours, visible, created)
     VALUES (:name,:description,:location,:opening_hours,:visible, now())"""
 
+    if type(location) is dict:
+        location = json.dumps(location, indent=4)
+
     db.session.execute(
         text(sql),
         {
@@ -72,7 +75,7 @@ def update_restaurant(restaurant_id, name, description, location, opening_hours)
 
     if type(location) is dict:
         location = json.dumps(location, indent=4)
-        
+
     db.session.execute(
         text(sql),
         {

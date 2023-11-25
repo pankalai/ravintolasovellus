@@ -92,11 +92,12 @@ def restaurants_search():
     return render_template("restaurants_list.html", restaurants=res)
 
 
-@app.route("/restaurants/add", methods=["POST"])
-def restaurant_add():
-    if session["csrf_token"] != request.form["csrf_token"] or not users.admin():
+@app.route("/restaurant/send", methods=["POST"])
+def restaurant_send():
+    if session["csrf_token"] != request.form["csrf_token"] or not users.is_admin():
         abort(403)
 
+    restaurant_id = request.form["id"]
     name = request.form["name"]
     description = request.form.get("description")
     opening_hours = request.form.get("opening_hours")
@@ -104,49 +105,7 @@ def restaurant_add():
     for i in ["street", "zip", "city"]:
         location[i] = request.form.get(i)
 
-    street, housenumber = map.split_address_to_street_and_housenumber(
-        location["street"]
-    )
-    coordinates = map.get_coordinates_for_address(
-        street, housenumber, location["zip"], location["city"]
-    )
-    if coordinates:
-        location["longitude"] = coordinates[0]
-        location["latitude"] = coordinates[1]
-
-    db.add_restaurant(
-        name,
-        description,
-        location,
-        opening_hours,
-    )
-    return redirect("/restaurants/list")
-
-
-@app.route("/restaurants/<int:restaurant_id>/edit", methods=["POST"])
-def restaurant_edit(restaurant_id):
-    if session["csrf_token"] != request.form["csrf_token"] or not users.admin():
-        abort(403)
-
-    restaurant_id = restaurant_id
-    name = request.form["name"]
-    description = request.form.get("description")
-    opening_hours = request.form.get("opening_hours")
-    location = {}
-    for i in ["street", "zip", "city"]:
-        location[i] = request.form.get(i)
-
-    # Update coordinates if location changed
-    old_info = db.get_restaurant(restaurant_id)
-    if (
-        not old_info.location.get("latitude")
-        or not old_info.location.get("longitude")
-        or not (
-            old_info.location["street"] == location["street"]
-            and old_info.location["zip"] == location["zip"]
-            and old_info.location["city"] == location["city"]
-        )
-    ):
+    if not restaurant_id:
         street, housenumber = map.split_address_to_street_and_housenumber(
             location["street"]
         )
@@ -157,14 +116,41 @@ def restaurant_edit(restaurant_id):
             location["longitude"] = coordinates[0]
             location["latitude"] = coordinates[1]
 
-    db.update_restaurant(
-        restaurant_id,
-        name,
-        description,
-        location,
-        opening_hours,
-    )
+        db.add_restaurant(
+            name,
+            description,
+            location,
+            opening_hours,
+        )
 
+    else:
+        old_info = db.get_restaurant(restaurant_id)
+        if (
+            not old_info.location.get("latitude")
+            or not old_info.location.get("longitude")
+            or not (
+                old_info.location["street"] == location["street"]
+                and old_info.location["zip"] == location["zip"]
+                and old_info.location["city"] == location["city"]
+            )
+        ):
+            street, housenumber = map.split_address_to_street_and_housenumber(
+                location["street"]
+            )
+            coordinates = map.get_coordinates_for_address(
+                street, housenumber, location["zip"], location["city"]
+            )
+            if coordinates:
+                location["longitude"] = coordinates[0]
+                location["latitude"] = coordinates[1]
+
+        db.update_restaurant(
+            restaurant_id,
+            name,
+            description,
+            location,
+            opening_hours,
+        )
     return redirect("/restaurants/list")
 
 
@@ -182,24 +168,24 @@ def show_restaurant(restaurant_id):
     return render_template("restaurant.html", restaurant=res)
 
 
-@app.route("/restaurants/new")
+@app.route("/restaurant/new")
 def add_restaurant():
-    if not users.admin():
+    if not users.is_admin():
         abort(403)
-    return render_template("restaurants_new.html")
+    return render_template("restaurant_form.html")
 
 
 @app.route("/restaurants/<int:restaurant_id>/edit")
 def edit_restaurant(restaurant_id):
-    if not users.admin():
+    if not users.is_admin():
         abort(403)
     res = db.get_restaurant(restaurant_id)
-    return render_template("restaurant_edit.html", restaurant=res)
+    return render_template("restaurant_form.html", restaurant=res)
 
 
 @app.route("/restaurants/<int:restaurant_id>/delete", methods=["POST"])
 def restaurant_delete(restaurant_id):
-    if session["csrf_token"] != request.form["csrf_token"] or not users.admin():
+    if session["csrf_token"] != request.form["csrf_token"] or not users.is_admin():
         abort(403)
     db.hide_restaurant(restaurant_id)
     return redirect("/restaurants/list")
@@ -245,7 +231,7 @@ def ratings_new(restaurant_id):
 
 @app.route("/ratings/<int:rating_id>/delete", methods=["POST"])
 def rating_delete(rating_id):
-    if session["csrf_token"] != request.form["csrf_token"] or not users.admin():
+    if session["csrf_token"] != request.form["csrf_token"] or not users.is_admin():
         abort(403)
     db.hide_rating(rating_id)
     re_id = request.form["restaurant_id"]

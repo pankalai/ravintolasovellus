@@ -44,7 +44,7 @@ def current_user():
     return session.get("username", None)
 
 
-def admin():
+def is_admin():
     return session.get("admin", False)
 
 

@@ -1,4 +1,5 @@
 import requests
+import re
 from requests.structures import CaseInsensitiveDict
 from app import API_KEY
 from db import get_restaurants, update_restaurant
@@ -26,21 +27,20 @@ def get_coordinates_for_address(street, housenumber, postcode, city, country="Fi
     return resp.json()["features"][0]["geometry"]["coordinates"]
 
 
-def create_markers():
-    restaurants = get_restaurants()
+def create_markers(restaurants: list):
     markers = []
     for res in restaurants:
         marker = {}
-
         if not res.location.get("latitude") or not res.location.get("longitude"):
-            street_address = res.location["street"].split(" ")
-            street = street_address[0]
-            housenumber = street_address[1] if len(street_address) > 1 else None
+            street, housenumber = split_address_to_street_and_housenumber(
+                res.location["street"]
+            )
             postcode = res.location["zip"]
             city = res.location["city"]
 
             if not (housenumber and street and postcode and city):
                 continue
+
             # print("Haetaan koordinaatit", res.location)
             coordinates = get_coordinates_for_address(
                 street, housenumber, postcode, city
@@ -49,8 +49,8 @@ def create_markers():
             if not coordinates:
                 continue
 
-            lat = coordinates[1]
             lon = coordinates[0]
+            lat = coordinates[1]
 
             # Update restaurant's info in database
             res.location["latitude"] = lat
@@ -64,9 +64,10 @@ def create_markers():
             )
 
         else:
-            lat = res.location.get("latitude")
-            lon = res.location.get("longitude")
+            lat = res.location["latitude"]
+            lon = res.location["longitude"]
 
+        marker["name"] = res.name
         marker["lat"] = lat
         marker["lon"] = lon
         marker["info"] = (
@@ -76,7 +77,6 @@ def create_markers():
             + "<br>"
             + res.opening_hours.replace("\r", "").replace("\n", ", ")
         )
-        marker["name"] = res.name
 
         markers.append(marker)
 
@@ -87,3 +87,10 @@ def get_user_coordinates():
     LATITUDE = 60.16952
     LONGITUDE = 24.93545
     return LATITUDE, LONGITUDE
+
+
+def split_address_to_street_and_housenumber(address):
+    m = re.search(r"\d", address).start()
+    street = address[:m].rstrip()
+    housenumber = address[m:].split(" ")[0]
+    return (street, housenumber)

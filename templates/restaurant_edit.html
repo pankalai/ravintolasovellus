@@ -8,7 +8,7 @@
     <input type="submit" value="Poista">
 </form>
 
-<form action="/restaurants/send" method="POST">
+<form action="/restaurants/{{ restaurant.id }}/edit" method="POST">
     <p>
         <h4>Nimi</h4>
         <input type="text" name="name" value = "{{ restaurant.name }}"><br>

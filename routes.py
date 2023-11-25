@@ -72,9 +72,8 @@ def restaurants(list_type):
         res = sorted(res, key=lambda r: r.name)
         session["previous_url"] = url_for("restaurant")
         return render_template("restaurants_list.html", restaurants=res)
-    map.create_markers()
     if list_type == "map":
-        markers = map.create_markers()
+        markers = map.create_markers(db.get_restaurants())
         user_coordinates = map.get_user_coordinates()
         return render_template(
             "restaurants_map.html",
@@ -93,35 +92,79 @@ def restaurants_search():
     return render_template("restaurants_list.html", restaurants=res)
 
 
-@app.route("/restaurants/send", methods=["POST"])
-def restaurant_send():
+@app.route("/restaurants/add", methods=["POST"])
+def restaurant_add():
     if session["csrf_token"] != request.form["csrf_token"] or not users.admin():
         abort(403)
-    restaurant_id = request.form["id"] if "id" in request.form.keys() else None
+
     name = request.form["name"]
     description = request.form.get("description")
-
+    opening_hours = request.form.get("opening_hours")
     location = {}
     for i in ["street", "zip", "city"]:
         location[i] = request.form.get(i)
 
-    opening_hours = request.form.get("opening_hours")
+    street, housenumber = map.split_address_to_street_and_housenumber(
+        location["street"]
+    )
+    coordinates = map.get_coordinates_for_address(
+        street, housenumber, location["zip"], location["city"]
+    )
+    if coordinates:
+        location["longitude"] = coordinates[0]
+        location["latitude"] = coordinates[1]
 
-    if restaurant_id:
-        db.update_restaurant(
-            restaurant_id,
-            name,
-            description,
-            location,
-            opening_hours,
+    db.add_restaurant(
+        name,
+        description,
+        location,
+        opening_hours,
+    )
+    return redirect("/restaurants/list")
+
+
+@app.route("/restaurants/<int:restaurant_id>/edit", methods=["POST"])
+def restaurant_edit(restaurant_id):
+    if session["csrf_token"] != request.form["csrf_token"] or not users.admin():
+        abort(403)
+
+    restaurant_id = restaurant_id
+    name = request.form["name"]
+    description = request.form.get("description")
+    opening_hours = request.form.get("opening_hours")
+    location = {}
+    for i in ["street", "zip", "city"]:
+        location[i] = request.form.get(i)
+
+    # Update coordinates if location changed
+    old_info = db.get_restaurant(restaurant_id)
+    if (
+        not old_info.location.get("latitude")
+        or not old_info.location.get("longitude")
+        or not (
+            old_info.location["street"] == location["street"]
+            and old_info.location["zip"] == location["zip"]
+            and old_info.location["city"] == location["city"]
         )
-    else:
-        db.add_restaurant(
-            name,
-            description,
-            location,
-            opening_hours,
+    ):
+        street, housenumber = map.split_address_to_street_and_housenumber(
+            location["street"]
         )
+        coordinates = map.get_coordinates_for_address(
+            street, housenumber, location["zip"], location["city"]
+        )
+        if coordinates:
+            location["longitude"] = coordinates[0]
+            location["latitude"] = coordinates[1]
+
+    db.update_restaurant(
+        restaurant_id,
+        name,
+        description,
+        location,
+        opening_hours,
+    )
+
     return redirect("/restaurants/list")
 
 

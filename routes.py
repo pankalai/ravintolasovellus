@@ -123,6 +123,8 @@ def restaurant_send():
     for i in ["street", "zip", "city"]:
         location[i] = request.form.get(i).lstrip().rstrip()
 
+    old_info = None if request.form["old_info"] == "None" else request.form["old_info"]
+
     # Missing info check
     if not (
         name
@@ -132,9 +134,7 @@ def restaurant_send():
         and opening_hours
     ):
         res = (
-            json.loads(request.form["old_info"].replace("'", '"'))
-            if request.form["old_info"]
-            else None
+            json.loads(request.form["old_info"].replace("'", '"')) if old_info else None
         )
         return render_template(
             "restaurant_form.html",
@@ -147,7 +147,7 @@ def restaurant_send():
     if not restaurant_id:
         get_coordinates = True
     else:
-        old_info = request.form["old_info"].replace("'", '"')
+        old_info = old_info.replace("'", '"')
         old_info = json.loads(old_info)
 
         if (
@@ -192,15 +192,19 @@ def restaurant_send():
 
 @app.route("/restaurants/<int:restaurant_id>/ratings")
 def show_ratings(restaurant_id):
+    res = db.get_restaurant(restaurant_id, True)
+    if not res:
+        return redirect("/ratings")
     rat = db.get_restaurants_ratings(restaurant_id)
-    res = db.get_restaurant(restaurant_id)
     rat = sorted(rat, key=lambda r: r.created, reverse=True)
     return render_template("restaurant_ratings.html", ratings=rat, res=res)
 
 
 @app.route("/restaurants/<int:restaurant_id>")
 def show_restaurant(restaurant_id):
-    res = db.get_restaurant(restaurant_id)
+    res = db.get_restaurant(restaurant_id, True)
+    if not res:
+        return redirect("/restaurants/list")
     return render_template("restaurant.html", restaurant=res)
 
 

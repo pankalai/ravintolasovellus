@@ -57,9 +57,9 @@ def get_restaurants(category="", city="", description=""):
     return result.fetchall()
 
 
-def get_restaurant(restaurant_id):
-    sql = "SELECT id, name, description, location, opening_hours FROM restaurants WHERE id = :id"
-    result = db.session.execute(text(sql), {"id": restaurant_id})
+def get_restaurant(restaurant_id, visible: bool = True):
+    sql = "SELECT id, name, description, location, opening_hours FROM restaurants WHERE visible = :visible and id = :id"
+    result = db.session.execute(text(sql), {"visible": visible, "id": restaurant_id})
     return result.fetchone()
 
 

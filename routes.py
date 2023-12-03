@@ -5,6 +5,9 @@ import users
 import db
 import map
 import json
+import categories
+import ratings
+import restaurants
 
 
 @app.route("/")
@@ -67,16 +70,16 @@ def restaurant():
 
 
 @app.route("/restaurants/<string:list_type>")
-def restaurants(list_type):
+def show_restaurants(list_type):
     if list_type == "list":
-        res = db.get_restaurants()
+        res = restaurants.get_restaurants()
         res = sorted(res, key=lambda r: r.name)
-        cat = db.get_categories()
+        cat = categories.get_categories()
         cat = sorted(cat, key=lambda c: c.name)
         session["previous_url"] = url_for("restaurant")
         return render_template("restaurants_list.html", restaurants=res, categories=cat)
     if list_type == "map":
-        markers = map.create_markers(db.get_restaurants())
+        markers = map.create_markers(restaurants.get_restaurants())
         user_coordinates = map.get_user_coordinates()
         return render_template(
             "restaurants_map.html",
@@ -92,15 +95,15 @@ def restaurants_search():
     city = request.form.get("city", None)
     search_text = request.form.get("description", None)
 
-    restaurants = db.get_restaurants(categories_selected, city, search_text)
-    restaurants = sorted(restaurants, key=lambda r: r.name)
-    categories = db.get_categories()
-    categories = sorted(categories, key=lambda c: c.name)
+    res = restaurants.get_restaurants(categories_selected, city, search_text)
+    res = sorted(res, key=lambda r: r.name)
+    cat = categories.get_categories()
+    cat = sorted(cat, key=lambda c: c.name)
 
     return render_template(
         "restaurants_list.html",
-        restaurants=restaurants,
-        categories=categories,
+        restaurants=res,
+        categories=cat,
         selected_categories=[int(c) for c in categories_selected],
         city=city,
         search_text=search_text,
@@ -111,7 +114,7 @@ def restaurants_search():
 def add_restaurant():
     if not users.is_admin():
         abort(403)
-    cat = db.get_categories()
+    cat = categories.get_categories()
     cat = sorted(cat, key=lambda c: c.name)
     return render_template("restaurant_form.html", restaurant={}, categories=cat)
 
@@ -120,11 +123,11 @@ def add_restaurant():
 def edit_restaurant(restaurant_id):
     if not users.is_admin():
         abort(403)
-    res = db.get_restaurant(restaurant_id)
+    res = restaurants.get_restaurant(restaurant_id)
     res = res._asdict()
-    cat = db.get_categories()
+    cat = categories.get_categories()
     cat = sorted(cat, key=lambda c: c.name)
-    res_cat = db.get_restaurant_category(restaurant_id)
+    res_cat = categories.get_restaurant_category(restaurant_id)
 
     res_cat = [int(item.id) for item in res_cat]
     return render_template(
@@ -200,41 +203,41 @@ def restaurant_send():
             location["latitude"] = coordinates[1]
 
     if not restaurant_id:
-        db.add_restaurant(name, description, location, opening_hours, categories)
+        restaurants.add_restaurant(
+            name, description, location, opening_hours, categories
+        )
     else:
-        db.update_restaurant(
+        restaurants.update_restaurant(
             restaurant_id, name, description, location, opening_hours, categories
         )
     return redirect("/restaurants/list")
 
 
 @app.route("/restaurants/<int:restaurant_id>/ratings")
-def show_ratings(restaurant_id):
-    restaurant = db.get_restaurant(restaurant_id, True)
+def show_restaurant_ratings(restaurant_id):
+    restaurant = restaurants.get_restaurant(restaurant_id, True)
     if not restaurant:
         return redirect("/ratings")
-    ratings = db.get_restaurants_ratings(restaurant_id)
-    ratings = sorted(ratings, key=lambda r: r.created, reverse=True)
-    return render_template("restaurant_ratings.html", ratings=ratings, res=restaurant)
+    rat = ratings.get_restaurants_ratings(restaurant_id)
+    rat = sorted(rat, key=lambda r: r.created, reverse=True)
+    return render_template("restaurant_ratings.html", ratings=rat, res=restaurant)
 
 
 @app.route("/restaurants/<int:restaurant_id>")
 def show_restaurant(restaurant_id):
-    restaurant = db.get_restaurant(restaurant_id, True)
+    restaurant = restaurants.get_restaurant(restaurant_id, True)
     if not restaurant:
         return redirect("/restaurants/list")
-    categories = db.get_restaurant_category(restaurant_id)
+    cat = categories.get_restaurant_category(restaurant_id)
 
-    return render_template(
-        "restaurant.html", restaurant=restaurant, categories=categories
-    )
+    return render_template("restaurant.html", restaurant=restaurant, categories=cat)
 
 
 @app.route("/restaurants/<int:restaurant_id>/delete", methods=["POST"])
 def restaurant_delete(restaurant_id):
     if session["csrf_token"] != request.form["csrf_token"] or not users.is_admin():
         abort(403)
-    db.hide_restaurant(restaurant_id)
+    restaurants.hide_restaurant(restaurant_id)
     return redirect("/restaurants/list")
 
 
@@ -242,24 +245,24 @@ def restaurant_delete(restaurant_id):
 
 
 @app.route("/ratings")
-def ratings():
-    rat = db.get_ratings()
+def show_ratings():
+    rat = ratings.get_ratings()
     rat = sorted(rat, key=lambda r: (r.average, r.count), reverse=True)
-    cat = db.get_categories()
+    cat = categories.get_categories()
     cat = sorted(cat, key=lambda c: c.name)
-    session["previous_url"] = url_for("ratings")
+    session["previous_url"] = url_for("show_ratings")
     return render_template("ratings.html", ratings=rat, categories=cat)
 
 
 @app.route("/ratings/search", methods=["POST"])
-def ratings_search():
+def search_ratings():
     categories_selected = request.form.getlist("categories", None)
     city = request.form.get("city", None)
-    rat = db.get_ratings(categories_selected, city)
+    rat = ratings.get_ratings(categories_selected, city)
     rat = sorted(rat, key=lambda r: r.average, reverse=True)
-    cat = db.get_categories()
+    cat = categories.get_categories()
     cat = sorted(cat, key=lambda c: c.name)
-    session["previous_url"] = url_for("ratings")
+    session["previous_url"] = url_for("show_ratings")
     return render_template(
         "ratings.html",
         ratings=rat,
@@ -270,27 +273,27 @@ def ratings_search():
 
 
 @app.route("/ratings/send", methods=["POST"])
-def rating_send():
+def send_rating():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     restaurant_id = request.form.get("id")
     stars = request.form.get("stars")
     comment = request.form.get("comment")
-    db.add_rating(users.user_id(), restaurant_id, stars, comment)
+    ratings.add_rating(users.user_id(), restaurant_id, stars, comment)
     return redirect("/ratings")
 
 
 @app.route("/ratings/new/<int:restaurant_id>")
-def ratings_new(restaurant_id):
-    res = db.get_restaurant(restaurant_id)
+def new_rating(restaurant_id):
+    res = restaurants.get_restaurant(restaurant_id)
     return render_template("ratings_new.html", id=id, restaurant=res)
 
 
 @app.route("/ratings/<int:rating_id>/delete", methods=["POST"])
-def rating_delete(rating_id):
+def hide_rating(rating_id):
     if session["csrf_token"] != request.form["csrf_token"] or not users.is_admin():
         abort(403)
-    db.hide_rating(rating_id)
+    ratings.hide_rating(rating_id)
     re_id = request.form["restaurant_id"]
     return redirect("/restaurants/" + re_id + "/ratings")
 
@@ -302,11 +305,11 @@ def rating_delete(rating_id):
 def show_categories():
     if not users.is_admin():
         abort(403)
-    categories = db.get_categories_and_restaurants()
-    categories = sorted(categories, key=lambda c: c.name)
+    cats = categories.get_categories_and_restaurants()
+    cats = sorted(cats, key=lambda c: c.name)
 
     cat = {}
-    for c in categories:
+    for c in cats:
         if c.name not in cat:
             cat[c.name] = {}
             cat[c.name]["count"] = 0
@@ -323,5 +326,5 @@ def add_category():
     if session["csrf_token"] != request.form["csrf_token"] or not users.is_admin():
         abort(403)
     name = request.form.get("name")
-    db.add_category(name)
+    categories.add_category(name)
     return redirect("/categories")

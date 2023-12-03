@@ -1,12 +1,33 @@
 from secrets import token_hex
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
-import db
+from db import db, text
 import re
 
 
+def get_user(username):
+    sql = "SELECT id, password, admin FROM users WHERE username=:username"
+    result = db.session.execute(text(sql), {"username": username})
+    return result.fetchone()
+
+
+def register(username, hash_value):
+    sql = """INSERT INTO users (username, password, admin, created)
+    VALUES (:username, :password, :admin, now())"""
+    db.session.execute(
+        text(sql), {"username": username, "password": hash_value, "admin": False}
+    )
+    db.session.commit()
+
+
+def add_visit(user_id):
+    sql = "INSERT INTO visits (user_id, time) VALUES (:user_id, now())"
+    db.session.execute(text(sql), {"user_id": user_id})
+    db.session.commit()
+
+
 def login(username, password):
-    user = db.login(username)
+    user = get_user(username)
     if not user:
         return False
     if check_password_hash(user.password, password):
@@ -14,7 +35,7 @@ def login(username, password):
         session["username"] = username
         session["admin"] = user.admin
         session["csrf_token"] = token_hex(16)
-        db.add_visit(user.id)
+        add_visit(user.id)
         return True
     return False
 

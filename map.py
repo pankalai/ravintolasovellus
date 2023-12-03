@@ -2,7 +2,7 @@ import requests
 import re
 from requests.structures import CaseInsensitiveDict
 from app import API_KEY
-from db import get_restaurants, update_restaurant
+import db
 
 
 def get_coordinates_for_address(street, housenumber, postcode, city, country="Finland"):

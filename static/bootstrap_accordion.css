@@ -2232,7 +2232,7 @@ input[type=search]{
     appearance:none
 }
 input[type=checkbox],input[type=radio]{
-    margin:4px 0 0;
+    margin:4px 4px 4px;
     margin-top:1px\9;
     line-height:normal
 }

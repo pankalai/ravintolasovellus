@@ -1,5 +1,60 @@
 {% extends "layout.html" %}
 {% block title %}Etusivu{% endblock %}
 {% block content %}
-<h2>Ryhmät</h2>
+
+<link rel="stylesheet" href="/static/bootstrap_accordion.css"/>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.js"></script>
+
+
+<h2>Kategoriat</h2>
+<br>
+<form action="/categories/add" method="POST">
+    <input type="text" name="name">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="submit" id="submit" value="Lisää" class="btn btn-primary">
+</form>
+
+<br>
+<hr>
+<p>
+
+<div class="panel-group" id="accordion">
+    {% for key,value in categories.items() %}
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+        
+                <div data-toggle="collapse" data-target="#r{{loop.index}}" role="button">
+                <strong>{{key}}</strong> &ensp;
+                <span class="badge badge-category">{{value['count']}}</span>
+                </div>
+        </div>
+
+        <div id="r{{loop.index}}" class="panel-collapse collapse">
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                    {% for r in value['restaurants'] %}
+                        <tr>
+                            <td>{{r[0]}}</td>
+                            <td>{{r[1]}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+  
+</div> 
+
+
+
+</p>
+
+
 {% endblock %}

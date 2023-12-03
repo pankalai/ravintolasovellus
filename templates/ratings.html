@@ -1,46 +1,85 @@
 {% extends "layout.html" %}
 {% block title %}Etusivu{% endblock %}
 {% block content %}
+
+<link rel="stylesheet" href="/static/bootstrap_dropdown.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+
+
 <h2>Arviot</h2>
-<form action="/ratings/search" method="POST" style="float: left;"> 
-    <!-- Kategoria: 
-    <select name="category">
-        <option value="sushi">Sushi</option>
-        <option value="indian">Intialainen</option>
-    </select> -->
-    Kaupunki: <input type="text" name="city">
-    <input type="submit" value="Hae" style="width:50px;">
-</form>
-<form action="/ratings" method="GET">
-    <input type="submit" value="Poista rajaukset" style="margin-left: 10px;">
-</form>
 <br>
+<div class="container">
+    <div class="row">
+        <form action="/ratings/search" method="POST" style="float: left;"> 
+            <div class="dropdown" style="float: left;">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="width: 10em">
+                    <span>Kategoria</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+                    {% for c in categories %}
+                    <li >
+                        <label>
+                            <input type="checkbox" name="categories" value="{{ c.id }}" {% if c.id in selected_categories %}{{ 'checked' }}{% endif %}> {{ c.name }}
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div style="float: left; margin-left:1em;">
+                Kaupunki: <input type="text" name="city" value="{{city}}">
+            </div>
+            <div style="float: left; margin-left:1em">
+                <input type="submit" value="Hae" style="width:8em;" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="row" style="float: left">
+        <form action="/ratings" method="GET" style="float: right;">
+            <input type="submit" value="Poista rajaukset" class="btn btn-warning">
+        </form>
+    </div>
+</div>
+
 <hr>
-<table width="100%">
-    <col width="33%">
+<br>
+<table class="table accordion table-striped table-hover">
+    <col width="30%">
     <col width="15%">
     <col width="12%">
-    <col width="10%">
-    <tr>
-    <th align="left">Ravintola</th>
-    <th align="left">Kaupunki</th>
-    <th align="left">Arvostelut</th>
-    <th align="center">Keskiarvo</th>
-    </tr>
-    {% for r in ratings %}
-    <tr>
-        <td><a href="restaurants/{{ r.id }}">{{ r.name }}</a></td>
-        <td>{{ r.location.city }}</td>
-        <td align="center">{{ r.count }}</td>
-        <td align="center">{{ '%0.1f'| format(r.average|float) }}</td>
-        <td style="text-align: right;">
-            <a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a>
-            &nbsp;
+    <col width="15%">
+    <tbody>
+        <tr>
+            <th>Ravintola</th>
+            <th>Kaupunki</th>
+            <th>Arvostelut</th>
+            <th>Keskiarvo</th>
             {% if session.get("username", None) %}
-            <a href="/ratings/new/{{ r.id }}">Arvostele</a>
+            <th></th>
             {% endif %}
-        </td>  
-    </tr>
-    {% endfor %}
+        </tr>
+
+    
+        {% for r in ratings %}
+        <tr>
+            <td><a href="restaurants/{{ r.id }}">{{ r.name }}</a></td>
+            <td>{{ r.location.city }}</td>
+            <td align="center">{{ r.count }}</td>
+            <td align="center">{{ '%0.1f'| format(r.average|float) }}</td>
+            {% if session.get("username", None) %}
+                <td align="right">
+                    <a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a>
+                    &nbsp;
+                    <a href="/ratings/new/{{ r.id }}">Arvostele</a>
+                </td>  
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
+
+<script src="{{ url_for('static', filename='checkboxes.js') }}"></script>
+
 {% endblock %}

@@ -1,11 +1,3 @@
-DROP TABLE IF EXISTS images;
-DROP TABLE IF EXISTS visits;
-DROP TABLE IF EXISTS restaurants_groups;
-DROP TABLE IF EXISTS groups;
-DROP TABLE IF EXISTS ratings;
-DROP TABLE IF EXISTS restaurants;
-DROP TABLE IF EXISTS users;
-
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -40,18 +32,18 @@ CREATE TABLE ratings (
     CONSTRAINT fk_restaurant FOREIGN KEY(restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
 );
 
-CREATE TABLE groups ( 
+CREATE TABLE categories ( 
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
     created TIMESTAMP NOT NULL,
     modified TIMESTAMP
 );
 
-CREATE TABLE restaurants_groups ( 
+CREATE TABLE restaurants_categories ( 
     restaurant_id INT NOT NULL,
-    group_id INT NOT NULL,
+    category_id INT NOT NULL,
     CONSTRAINT fk_restaurant FOREIGN KEY(restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
-    CONSTRAINT fk_group FOREIGN KEY(group_id) REFERENCES groups (id) ON DELETE CASCADE
+    CONSTRAINT fk_group FOREIGN KEY(category_id) REFERENCES categories (id) ON DELETE CASCADE
 );
 
 CREATE TABLE visits ( 

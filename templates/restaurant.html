@@ -6,9 +6,18 @@
 
 
 
-<p>{{ restaurant.name }}</p>
+<p><strong>{{ restaurant.name }}</strong></p>
+
+
 <p><i>{{ restaurant.description }}</i></p>
-<p>{{ restaurant.opening_hours }}</p>
+<p>{{ restaurant.opening_hours.replace('\n','<br>') | safe }}</p>
+<p>
+    {% for c in categories %}
+        <span class="badge badge-category">
+        <i>{{ c.name }}</i>
+        </span>
+    {% endfor %}
+</p>
 <br>
 <a href="{{ session['previous_url'] }}">Takaisin</a> 
 {% endblock %}

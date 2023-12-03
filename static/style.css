@@ -14,3 +14,32 @@ nav {
 }
 
 #map {height: 100%;width: 100vw;}
+
+
+.badge{
+    display:inline-block;
+    padding:.25em .4em;
+    font-size:75%;
+    font-weight:700;
+    line-height:1;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align:baseline;
+    border-radius:.25rem
+}
+
+.badge-category{
+    color:#fff;
+    background-color:#17a2b8
+}
+
+.kategoriat_valintalista{
+    width:200px;
+    /* padding-right:15px;
+    padding-left:15px;
+    margin-right:auto;
+    margin-left:auto; */
+    max-height: 150px;
+    overflow: auto
+
+}

@@ -8,12 +8,9 @@ Toteutetut toiminnallisuudet:
 - Käyttäjä voi antaa arvion (tähdet ja kommentti) ravintolasta ja lukea muiden antamia arvioita.<br>
 - Käyttäjä voi etsiä kaikki ravintolat, joiden kuvauksessa on annettu sana.<br>
 - Käyttäjä näkee myös listan, jossa ravintolat on järjestetty parhaimmasta huonoimpaan arvioiden mukaisesti.<br>
+- Käyttäjä näkee ravintolat kartalla ja voi painaa ravintolasta, jolloin siitä näytetään lisää tietoa (kuten kuvaus ja aukioloajat).<br>
 - Ylläpitäjä voi lisätä ja poistaa ravintoloita sekä määrittää ravintolasta näytettävät tiedot.<br>
 - Ylläpitäjä voi tarvittaessa poistaa käyttäjän antaman arvion.<br>
-
-Toteuttamattomat toiminnallisuudet:
-
-- Käyttäjä näkee ravintolat kartalla ja voi painaa ravintolasta, jolloin siitä näytetään lisää tietoa (kuten kuvaus ja aukioloajat).<br>
 - Ylläpitäjä voi luoda ryhmiä, joihin ravintoloita voi luokitella. Ravintola voi kuulua yhteen tai useampaan ryhmään.<br>
 
 # Sovelluksen käyttö
@@ -27,13 +24,8 @@ requirements.txt
 schema.sql  
 (psql < schema.sql)
 
-Tietokannan rakenteen luonnin yhteydessä luodaan kaksi käyttäjää:
+Tietokannan rakenteen luonnin yhteydessä luodaan admin-käyttäjä:
 
-Käyttäjä <br>
-tunnus: user <br>
-salasana: user
-
-Ylläpitäjä <br>
 tunnus: admin <br>
 salasana: admin
 

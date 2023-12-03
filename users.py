@@ -1,8 +1,8 @@
 from secrets import token_hex
+import re
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import db, text
-import re
 
 
 def get_user(username):
@@ -11,7 +11,7 @@ def get_user(username):
     return result.fetchone()
 
 
-def register(username, hash_value):
+def exec_register(username, hash_value):
     sql = """INSERT INTO users (username, password, admin, created)
     VALUES (:username, :password, :admin, now())"""
     db.session.execute(
@@ -20,9 +20,9 @@ def register(username, hash_value):
     db.session.commit()
 
 
-def add_visit(user_id):
+def add_visit(usr_id):
     sql = "INSERT INTO visits (user_id, time) VALUES (:user_id, now())"
-    db.session.execute(text(sql), {"user_id": user_id})
+    db.session.execute(text(sql), {"user_id": usr_id})
     db.session.commit()
 
 
@@ -50,7 +50,7 @@ def delete_session():
 def register(username, password):
     hash_value = generate_password_hash(password)
     try:
-        db.register(username, hash_value)
+        exec_register(username, hash_value)
     except Exception as err:
         print(err)
         return False
@@ -76,7 +76,4 @@ def password_valid(password):
     valid = re.search(pattern, password)
 
     # validating conditions
-    if valid:
-        return True
-    else:
-        return False
+    return valid

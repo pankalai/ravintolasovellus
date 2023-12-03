@@ -30,7 +30,8 @@ def get_ratings(category=None, city=None):
         data["category_id"] = tuple(category)
         sql = (
             sql
-            + " and res.id in (select restaurant_id from restaurants_categories where category_id in :category_id)"
+            + """ and res.id in (select restaurant_id from restaurants_categories
+            where category_id in :category_id)"""
         )
     if city:
         data["city"] = city.lower()

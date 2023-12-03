@@ -1,13 +1,13 @@
-import requests
 import re
+import requests
 from requests.structures import CaseInsensitiveDict
 from app import API_KEY
-import db
+import restaurants
 
 
 def get_coordinates_for_address(street, housenumber, postcode, city, country="Finland"):
     url = (
-        f"https://api.geoapify.com/v1/geocode/search?"
+        "https://api.geoapify.com/v1/geocode/search?"
         + f"housenumber={housenumber}&"
         + f"street={street}&"
         + f"postcode={postcode}&"
@@ -19,7 +19,7 @@ def get_coordinates_for_address(street, housenumber, postcode, city, country="Fi
     headers = CaseInsensitiveDict()
     headers["Accept"] = "application/json"
 
-    resp = requests.get(url, headers=headers)
+    resp = requests.get(url, headers=headers, timeout=15)
 
     if resp.status_code == 400:
         return None
@@ -27,9 +27,9 @@ def get_coordinates_for_address(street, housenumber, postcode, city, country="Fi
     return resp.json()["features"][0]["geometry"]["coordinates"]
 
 
-def create_markers(restaurants: list):
+def create_markers(rest: list):
     markers = []
-    for res in restaurants:
+    for res in rest:
         marker = {}
         if not res.location.get("latitude") or not res.location.get("longitude"):
             street, housenumber = split_address_to_street_and_housenumber(
@@ -55,7 +55,7 @@ def create_markers(restaurants: list):
             # Update restaurant's info in database
             res.location["latitude"] = lat
             res.location["longitude"] = lon
-            update_restaurant(
+            restaurants.update_restaurant(
                 res.id,
                 res.name,
                 res.description,
@@ -84,16 +84,16 @@ def create_markers(restaurants: list):
 
 
 def get_user_coordinates():
-    LATITUDE = 60.16952
-    LONGITUDE = 24.93545
-    return LATITUDE, LONGITUDE
+    latitude = 60.16952
+    longitude = 24.93545
+    return latitude, longitude
 
 
 def split_address_to_street_and_housenumber(address):
     try:
-        m = re.search(r"\d", address).start()
-        street = address[:m].rstrip()
-        housenumber = address[m:].split(" ")[0]
+        index = re.search(r"\d", address).start()
+        street = address[:index].rstrip()
+        housenumber = address[index:].split(" ")[0]
         return street, housenumber
     except:
         return None, None

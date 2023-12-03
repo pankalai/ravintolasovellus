@@ -1,10 +1,9 @@
-from flask import render_template, redirect, request, url_for, session, abort
-from flask_googlemaps import Map
-from app import app
-import users
-import db
-import map
 import json
+from flask import render_template, redirect, request, url_for, session, abort
+from app import app
+
+import users
+import map
 import categories
 import ratings
 import restaurants
@@ -50,7 +49,9 @@ def register():
         if not users.password_valid(password1):
             return render_template(
                 "register.html",
-                notice="Salasanan tulee täyttää seuraavat ehdot<br><ul><li>Yksi pieni kirjain</li><li>Yksi iso kirjain</li><li>Yksi numero</li><li>Pituus vähintään 8 ja korkeintaan 20</li></ul>",
+                notice="""Salasanan tulee täyttää seuraavat ehdot<br><ul><li>
+                Yksi pieni kirjain</li><li>Yksi iso kirjain</li><li>Yksi numero</li>
+                <li>Pituus vähintään 8 ja korkeintaan 20</li></ul>""",
             )
         if users.register(username, password1):
             return redirect("/")
@@ -87,6 +88,7 @@ def show_restaurants(list_type):
             user_lon=user_coordinates[1],
             markers=markers,
         )
+    return redirect("/restaurants")
 
 
 @app.route("/restaurants/search", methods=["POST"])
@@ -147,7 +149,7 @@ def restaurant_send():
     name = request.form["name"].lstrip().rstrip()
     description = request.form.get("description").lstrip().rstrip()
     opening_hours = request.form.get("opening_hours").lstrip().rstrip()
-    categories = request.form.getlist("categories")
+    cats = request.form.getlist("categories")
 
     location = {}
     for i in ["street", "zip", "city"]:
@@ -203,34 +205,32 @@ def restaurant_send():
             location["latitude"] = coordinates[1]
 
     if not restaurant_id:
-        restaurants.add_restaurant(
-            name, description, location, opening_hours, categories
-        )
+        restaurants.add_restaurant(name, description, location, opening_hours, cats)
     else:
         restaurants.update_restaurant(
-            restaurant_id, name, description, location, opening_hours, categories
+            restaurant_id, name, description, location, opening_hours, cats
         )
     return redirect("/restaurants/list")
 
 
 @app.route("/restaurants/<int:restaurant_id>/ratings")
 def show_restaurant_ratings(restaurant_id):
-    restaurant = restaurants.get_restaurant(restaurant_id, True)
-    if not restaurant:
+    res = restaurants.get_restaurant(restaurant_id, True)
+    if not res:
         return redirect("/ratings")
     rat = ratings.get_restaurants_ratings(restaurant_id)
     rat = sorted(rat, key=lambda r: r.created, reverse=True)
-    return render_template("restaurant_ratings.html", ratings=rat, res=restaurant)
+    return render_template("restaurant_ratings.html", ratings=rat, res=res)
 
 
 @app.route("/restaurants/<int:restaurant_id>")
 def show_restaurant(restaurant_id):
-    restaurant = restaurants.get_restaurant(restaurant_id, True)
-    if not restaurant:
+    res = restaurants.get_restaurant(restaurant_id, True)
+    if not res:
         return redirect("/restaurants/list")
     cat = categories.get_restaurant_category(restaurant_id)
 
-    return render_template("restaurant.html", restaurant=restaurant, categories=cat)
+    return render_template("restaurant.html", restaurant=res, categories=cat)
 
 
 @app.route("/restaurants/<int:restaurant_id>/delete", methods=["POST"])
@@ -309,14 +309,14 @@ def show_categories():
     cats = sorted(cats, key=lambda c: c.name)
 
     cat = {}
-    for c in cats:
-        if c.name not in cat:
-            cat[c.name] = {}
-            cat[c.name]["count"] = 0
-            cat[c.name]["restaurants"] = []
-        if c.restaurant:
-            cat[c.name]["count"] += 1
-            cat[c.name]["restaurants"].append((c.restaurant, c.city))
+    for ca in cats:
+        if ca.name not in cat:
+            cat[ca.name] = {}
+            cat[ca.name]["count"] = 0
+            cat[ca.name]["restaurants"] = []
+        if ca.restaurant:
+            cat[ca.name]["count"] += 1
+            cat[ca.name]["restaurants"].append((ca.restaurant, ca.city))
 
     return render_template("categories.html", categories=cat)
 

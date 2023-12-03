@@ -28,7 +28,7 @@ def add_restaurant(name, description, location, opening_hours, cat):
 
 def get_restaurants(category="", city="", description=""):
     data = {}
-    sql = """SELECT id, name, description, location, opening_hours 
+    sql = """SELECT id, name, description, location, opening_hours
     FROM restaurants as res
     WHERE visible = true"""
 
@@ -36,7 +36,8 @@ def get_restaurants(category="", city="", description=""):
         data["category_id"] = tuple(category)
         sql = (
             sql
-            + " and res.id in (select restaurant_id from restaurants_categories where category_id in :category_id)"
+            + """ and res.id in (select restaurant_id from restaurants_categories
+            where category_id in :category_id)"""
         )
     if city:
         data["city"] = city.lower()
@@ -58,7 +59,8 @@ def get_restaurants(category="", city="", description=""):
 
 
 def get_restaurant(restaurant_id, visible: bool = True):
-    sql = "SELECT id, name, description, location, opening_hours FROM restaurants WHERE visible = :visible and id = :id"
+    sql = """SELECT id, name, description, location, opening_hours FROM restaurants
+    WHERE visible = :visible and id = :id"""
     result = db.session.execute(text(sql), {"visible": visible, "id": restaurant_id})
     return result.fetchone()
 

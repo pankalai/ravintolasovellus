@@ -49,9 +49,7 @@ def register():
         if not users.password_valid(password1):
             return render_template(
                 "register.html",
-                notice="""Salasanan tulee täyttää seuraavat ehdot<br><ul><li>
-                Yksi pieni kirjain</li><li>Yksi iso kirjain</li><li>Yksi numero</li>
-                <li>Pituus vähintään 8 ja korkeintaan 20</li></ul>""",
+                notice=users.get_password_requirements(),
             )
         if users.register(username, password1):
             return redirect("/")

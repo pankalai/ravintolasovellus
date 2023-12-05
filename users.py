@@ -77,3 +77,9 @@ def password_valid(password):
 
     # validating conditions
     return valid
+
+
+def get_password_requirements():
+    return """Salasanan tulee täyttää seuraavat ehdot<br><ul><li>
+            Yksi pieni kirjain</li><li>Yksi iso kirjain</li><li>Yksi numero</li>
+            <li>Pituus vähintään 8 ja korkeintaan 20</li></ul>"""

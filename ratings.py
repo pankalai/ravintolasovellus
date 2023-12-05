@@ -17,7 +17,7 @@ def add_rating(user_id, restaurant_id, stars, comment):
     db.session.commit()
 
 
-def get_ratings(category=None, city=None):
+def get_ratings(category=None, city=None, word=None):
     sql = """SELECT res.*,t.average, t.count
     FROM restaurants res
     INNER JOIN (
@@ -33,6 +33,14 @@ def get_ratings(category=None, city=None):
     if city:
         data["city"] = city.lower()
         sql += " and lower(location->>'city') = :city"
+    if word:
+        data["word"] = word.lower()
+        # This needs to be modified
+        sql = (
+            sql
+            + f""" and (lower(description) like '%{word.lower()}%'
+            or lower(name) like '%{word.lower()}%')"""
+        )
 
     sql += """ GROUP BY res.id ) as t on t.id=res.id 
         ORDER BY t.average desc, t.count desc"""

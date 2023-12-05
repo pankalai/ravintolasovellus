@@ -26,7 +26,7 @@ def add_restaurant(name, description, location, opening_hours, cat):
     categories.add_restaurant_category(restaurant_id, cat)
 
 
-def get_restaurants(category="", city="", description=""):
+def get_restaurants(category="", city="", word=""):
     data = {}
     sql = """SELECT id, name, description, location, opening_hours
     FROM restaurants as res
@@ -42,13 +42,13 @@ def get_restaurants(category="", city="", description=""):
     if city:
         data["city"] = city.lower()
         sql = sql + " and lower(location->>'city') = :city"
-    if description:
-        data["description"] = description.lower()
+    if word:
+        data["word"] = word.lower()
         # This needs to be modified
         sql = (
             sql
-            + f""" and (lower(description) like '%{description.lower()}%'
-            or lower(name) like '%{description.lower()}%')"""
+            + f""" and (lower(description) like '%{word.lower()}%'
+            or lower(name) like '%{word.lower()}%')"""
         )
 
     sql += " ORDER BY name"

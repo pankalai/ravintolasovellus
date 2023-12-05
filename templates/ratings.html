@@ -1,50 +1,9 @@
 {% extends "layout.html" %}
-{% block title %}Etusivu{% endblock %}
+{% block title %}Ravintolat{% endblock %}
 {% block content %}
-
-<link rel="stylesheet" href="/static/bootstrap_dropdown.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
-
-
 <h2>Arviot</h2>
-<br>
-<div class="container">
-    <div class="row">
-        <form action="/ratings/search" method="POST" style="float: left;"> 
-            <div class="dropdown" style="float: left;">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="width: 10em">
-                    <span>Kategoria</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
-                    {% for c in categories %}
-                    <li >
-                        <label>
-                            <input type="checkbox" name="categories" value="{{ c.id }}" {% if c.id in selected_categories %}{{ 'checked' }}{% endif %}> {{ c.name }}
-                        </label>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div style="float: left; margin-left:1em;">
-                Kaupunki: <input type="text" name="city" value="{{city}}">
-            </div>
-            <div style="float: left; margin-left:1em">
-                <input type="submit" value="Hae" style="width:8em;" class="btn btn-primary">
-            </div>
-        </form>
-    </div>
-    <br>
-    <div class="row" style="float: left">
-        <form action="/ratings" method="GET" style="float: right;">
-            <input type="submit" value="Poista rajaukset" class="btn btn-warning">
-        </form>
-    </div>
-</div>
+{% include 'search.html' %}
 
-<hr>
-<br>
 <table class="table accordion table-striped table-hover">
     <col width="30%">
     <col width="15%">
@@ -79,7 +38,5 @@
         {% endfor %}
     </tbody>
 </table>
-
-<script src="{{ url_for('static', filename='checkboxes.js') }}"></script>
 
 {% endblock %}

@@ -72,13 +72,18 @@ def restaurant():
 
 @app.route("/restaurants/<string:list_type>")
 def show_restaurants(list_type):
+    res = restaurants.get_restaurants()
     if list_type == "list":
-        res = restaurants.get_restaurants()
         cat = categories.get_categories()
         session["previous_url"] = url_for("restaurant")
-        return render_template("restaurants_list.html", restaurants=res, categories=cat)
+        return render_template(
+            "restaurants_list.html",
+            restaurants=res,
+            categories=cat,
+            entity="restaurants",
+        )
     if list_type == "map":
-        markers = map.create_markers(restaurants.get_restaurants())
+        markers = map.create_markers(res)
         user_coordinates = map.get_user_coordinates()
         return render_template(
             "restaurants_map.html",
@@ -91,20 +96,18 @@ def show_restaurants(list_type):
 
 @app.route("/restaurants/search", methods=["POST"])
 def restaurants_search():
-    categories_selected = request.form.getlist("categories", None)
-    city = request.form.get("city", None)
-    search_text = request.form.get("description", None)
+    sel_cat, city, search_text, cat = get_info_for_search_form()
 
-    res = restaurants.get_restaurants(categories_selected, city, search_text)
-    cat = categories.get_categories()
+    res = restaurants.get_restaurants(sel_cat, city, search_text)
 
     return render_template(
         "restaurants_list.html",
         restaurants=res,
+        selected_categories=sel_cat,
         categories=cat,
-        selected_categories=[int(c) for c in categories_selected],
         city=city,
         search_text=search_text,
+        entity="restaurants",
     )
 
 
@@ -242,22 +245,25 @@ def show_ratings():
     rat = ratings.get_ratings()
     cat = categories.get_categories()
     session["previous_url"] = url_for("show_ratings")
-    return render_template("ratings.html", ratings=rat, categories=cat)
+    return render_template(
+        "ratings.html", ratings=rat, categories=cat, entity="ratings"
+    )
 
 
 @app.route("/ratings/search", methods=["POST"])
 def search_ratings():
-    categories_selected = request.form.getlist("categories", None)
-    city = request.form.get("city", None)
-    rat = ratings.get_ratings(categories_selected, city)
-    cat = categories.get_categories()
-    session["previous_url"] = url_for("show_ratings")
+    sel_cat, city, search_text, cat = get_info_for_search_form()
+
+    rat = ratings.get_ratings(sel_cat, city, search_text)
+
     return render_template(
         "ratings.html",
         ratings=rat,
-        selected_categories=[int(c) for c in categories_selected],
+        selected_categories=sel_cat,
         categories=cat,
         city=city,
+        search_text=search_text,
+        entity="ratings",
     )
 
 
@@ -322,3 +328,15 @@ def add_category():
 def delete_category(category_id):
     categories.delete_category(category_id)
     return redirect("/categories")
+
+
+#
+
+
+def get_info_for_search_form():
+    selected_cat = request.form.getlist("categories", None)
+    selected_cat = [int(c) for c in selected_cat]
+    city = request.form.get("city", None)
+    search_text = request.form.get("word", None)
+    all_cat = categories.get_categories()
+    return selected_cat, city, search_text, all_cat

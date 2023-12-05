@@ -25,11 +25,20 @@
     <div class="panel panel-default">
 
         <div class="panel-heading">
-        
-                <div data-toggle="collapse" data-target="#r{{loop.index}}" role="button">
-                <strong>{{key}}</strong> &ensp;
-                <span class="badge badge-category">{{value['count']}}</span>
-                </div>
+            <div>
+                <span data-toggle="collapse" data-target="#r{{loop.index}}" role="button">
+                    <strong>{{key}}</strong> &ensp;
+                    <span class="badge badge-category">{{value['count']}}</span>
+                </span>
+                <span style="float:right;">
+                    <form action="/categories/{{value['id']}}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        <input type="submit" value="Poista">
+                    </form>
+                </span>
+
+            </div>
+    
         </div>
 
         <div id="r{{loop.index}}" class="panel-collapse collapse">

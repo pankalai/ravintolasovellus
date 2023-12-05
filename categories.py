@@ -43,3 +43,9 @@ def add_restaurant_category(restaurant_id, categories_id):
             text(sql), {"restaurant_id": restaurant_id, "category_id": category_id}
         )
     db.session.commit()
+
+
+def delete_category(category_id):
+    sql = "DELETE FROM categories WHERE id = :category_id"
+    db.session.execute(text(sql), {"category_id": category_id})
+    db.session.commit()

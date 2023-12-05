@@ -297,6 +297,7 @@ def show_categories():
     for ca in cats:
         if ca.name not in cat:
             cat[ca.name] = {}
+            cat[ca.name]["id"] = ca.id
             cat[ca.name]["count"] = 0
             cat[ca.name]["restaurants"] = []
         if ca.restaurant:
@@ -312,4 +313,10 @@ def add_category():
         abort(403)
     name = request.form.get("name")
     categories.add_category(name)
+    return redirect("/categories")
+
+
+@app.route("/categories/<int:category_id>/delete", methods=["POST"])
+def delete_category(category_id):
+    categories.delete_category(category_id)
     return redirect("/categories")

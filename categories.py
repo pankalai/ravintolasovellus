@@ -2,7 +2,7 @@ from db import db, text
 
 
 def get_categories():
-    sql = "SELECT id, name FROM categories"
+    sql = "SELECT id, name FROM categories ORDER BY name"
     result = db.session.execute(text(sql))
     return result.fetchall()
 
@@ -13,15 +13,10 @@ def get_categories_and_restaurants():
     FROM categories as cat
     LEFT JOIN restaurants_categories as res_cat ON res_cat.category_id = cat.id
     LEFT JOIN restaurants as res ON res.id = res_cat.restaurant_id
-    GROUP BY cat.id, cat.name, res.name, res.location->>'city'"""
+    GROUP BY cat.id, cat.name, res.name, res.location->>'city'
+    ORDER BY cat.name"""
     result = db.session.execute(text(sql))
     return result.fetchall()
-
-
-def add_category(name):
-    sql = "INSERT INTO categories (name, created) VALUES (:name, now())"
-    db.session.execute(text(sql), {"name": name})
-    db.session.commit()
 
 
 def get_restaurant_category(restaurant_id):
@@ -30,6 +25,12 @@ def get_restaurant_category(restaurant_id):
     WHERE restaurant_id = :restaurant_id"""
     result = db.session.execute(text(sql), {"restaurant_id": restaurant_id})
     return result.fetchall()
+
+
+def add_category(name):
+    sql = "INSERT INTO categories (name, created) VALUES (:name, now())"
+    db.session.execute(text(sql), {"name": name})
+    db.session.commit()
 
 
 def add_restaurant_category(restaurant_id, categories_id):

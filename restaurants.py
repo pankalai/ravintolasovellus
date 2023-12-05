@@ -51,6 +51,7 @@ def get_restaurants(category="", city="", description=""):
             or lower(name) like '%{description.lower()}%')"""
         )
 
+    sql += " ORDER BY name"
     result = db.session.execute(
         text(sql),
         data,

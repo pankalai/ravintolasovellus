@@ -28,16 +28,14 @@ def get_ratings(category=None, city=None):
     data = {}
     if category:
         data["category_id"] = tuple(category)
-        sql = (
-            sql
-            + """ and res.id in (select restaurant_id from restaurants_categories
+        sql += """ and res.id in (select restaurant_id from restaurants_categories
             where category_id in :category_id)"""
-        )
     if city:
         data["city"] = city.lower()
-        sql = sql + " and lower(location->>'city') = :city"
+        sql += " and lower(location->>'city') = :city"
 
-    sql = sql + " GROUP BY res.id ) as t on t.id=res.id"
+    sql += """ GROUP BY res.id ) as t on t.id=res.id 
+        ORDER BY t.average desc, t.count desc"""
 
     result = db.session.execute(text(sql), data)
     return result.fetchall()
@@ -46,7 +44,8 @@ def get_ratings(category=None, city=None):
 def get_restaurants_ratings(restaurant_id):
     sql = """SELECT r.id, stars, comment, r.created, u.username FROM ratings as r
     JOIN users as u on u.id = r.user_id
-    WHERE restaurant_id = :restaurant_id and visible = :visible"""
+    WHERE restaurant_id = :restaurant_id and visible = :visible
+    ORDER BY r.created desc"""
 
     result = db.session.execute(
         text(sql),

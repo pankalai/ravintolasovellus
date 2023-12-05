@@ -74,9 +74,7 @@ def restaurant():
 def show_restaurants(list_type):
     if list_type == "list":
         res = restaurants.get_restaurants()
-        res = sorted(res, key=lambda r: r.name)
         cat = categories.get_categories()
-        cat = sorted(cat, key=lambda c: c.name)
         session["previous_url"] = url_for("restaurant")
         return render_template("restaurants_list.html", restaurants=res, categories=cat)
     if list_type == "map":
@@ -98,9 +96,7 @@ def restaurants_search():
     search_text = request.form.get("description", None)
 
     res = restaurants.get_restaurants(categories_selected, city, search_text)
-    res = sorted(res, key=lambda r: r.name)
     cat = categories.get_categories()
-    cat = sorted(cat, key=lambda c: c.name)
 
     return render_template(
         "restaurants_list.html",
@@ -117,7 +113,6 @@ def add_restaurant():
     if not users.is_admin():
         abort(403)
     cat = categories.get_categories()
-    cat = sorted(cat, key=lambda c: c.name)
     return render_template("restaurant_form.html", restaurant={}, categories=cat)
 
 
@@ -128,7 +123,6 @@ def edit_restaurant(restaurant_id):
     res = restaurants.get_restaurant(restaurant_id)
     res = res._asdict()
     cat = categories.get_categories()
-    cat = sorted(cat, key=lambda c: c.name)
     res_cat = categories.get_restaurant_category(restaurant_id)
 
     res_cat = [int(item.id) for item in res_cat]
@@ -219,7 +213,6 @@ def show_restaurant_ratings(restaurant_id):
     if not res:
         return redirect("/ratings")
     rat = ratings.get_restaurants_ratings(restaurant_id)
-    rat = sorted(rat, key=lambda r: r.created, reverse=True)
     return render_template("restaurant_ratings.html", ratings=rat, res=res)
 
 
@@ -247,9 +240,7 @@ def restaurant_delete(restaurant_id):
 @app.route("/ratings")
 def show_ratings():
     rat = ratings.get_ratings()
-    rat = sorted(rat, key=lambda r: (r.average, r.count), reverse=True)
     cat = categories.get_categories()
-    cat = sorted(cat, key=lambda c: c.name)
     session["previous_url"] = url_for("show_ratings")
     return render_template("ratings.html", ratings=rat, categories=cat)
 
@@ -259,9 +250,7 @@ def search_ratings():
     categories_selected = request.form.getlist("categories", None)
     city = request.form.get("city", None)
     rat = ratings.get_ratings(categories_selected, city)
-    rat = sorted(rat, key=lambda r: r.average, reverse=True)
     cat = categories.get_categories()
-    cat = sorted(cat, key=lambda c: c.name)
     session["previous_url"] = url_for("show_ratings")
     return render_template(
         "ratings.html",
@@ -306,8 +295,6 @@ def show_categories():
     if not users.is_admin():
         abort(403)
     cats = categories.get_categories_and_restaurants()
-    cats = sorted(cats, key=lambda c: c.name)
-
     cat = {}
     for ca in cats:
         if ca.name not in cat:

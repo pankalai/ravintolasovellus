@@ -41,6 +41,7 @@ def register():
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+
         if password1 != password2:
             return render_template(
                 "register.html",
@@ -53,6 +54,7 @@ def register():
             )
         if users.register(username, password1):
             return redirect("/")
+
         return render_template(
             "register.html",
             notice="Rekisteröinti ei onnistunut. Yritä myöhemmin uudelleen.",

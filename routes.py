@@ -3,7 +3,8 @@ from flask import render_template, redirect, request, url_for, session, abort
 from app import app
 
 import users
-import map
+
+from map import map_service as map
 import categories
 import ratings
 import restaurants
@@ -84,11 +85,11 @@ def show_restaurants(list_type):
         )
     if list_type == "map":
         markers = map.create_markers(res)
-        user_coordinates = map.get_user_coordinates()
+        center_coordinates = map.get_coordinates()
         return render_template(
             "restaurants_map.html",
-            user_lat=user_coordinates[0],
-            user_lon=user_coordinates[1],
+            user_lat=center_coordinates[0],
+            user_lon=center_coordinates[1],
             markers=markers,
         )
     return redirect("/restaurants")

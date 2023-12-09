@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Arviot{% endblock %}
+{% block content %}
+
+<h2>Arviot</h2>
+
+{% include 'Forms/search_form.html' %}
+
+<hr>
+<table class="table accordion table-striped table-hover">
+    <col width="30%">
+    <col width="15%">
+    <col width="12%">
+    <col width="15%">
+    <tbody>
+        <tr>
+            <th>Ravintola</th>
+            <th>Kaupunki</th>
+            <th>Arvostelut</th>
+            <th>Keskiarvo</th>
+            {% if session.get("username", None) %}
+            <th></th>
+            {% endif %}
+        </tr>
+
+    
+        {% for r in ratings %}
+        <tr>
+            <td><a href="restaurants/{{ r.id }}">{{ r.name }}</a></td>
+            <td>{{ r.location.city }}</td>
+            <td align="center">{{ r.count }}</td>
+            <td align="center">{{ '%0.1f'| format(r.average|float) }}</td>
+            {% if session.get("username", None) %}
+                <td align="right">
+                    <a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a>
+                    &nbsp;
+                    <a href="/ratings/new/{{ r.id }}">Arvostele</a>
+                </td>  
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

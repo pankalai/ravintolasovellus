@@ -1,0 +1,52 @@
+
+<form action="/restaurant/send" method="POST">
+    <p>
+        <h4>Nimi</h4>
+        <input type="text" name="name" value = "{{ restaurant.get('name','')}}" required><br>
+    </p>
+    <p>
+        <h4>Kuvaus</h4>
+        <textarea name="description" rows="2" cols="50">{{ restaurant.get('description','') }}</textarea><br>
+    </p>
+    <p>
+        <h4>Sijainti</h4>
+        <label style="width:100px;float: left;">Katuosoite:</label>
+        <input type="text" name="street" value="{{ restaurant.get('location', {}).get('street','') }}" required>
+        <br>
+        <label style="width:100px;float: left;">Postinumero:</label>
+        <input type="text" name="zip" value="{{ restaurant.get('location', {}).get('zip','') }}" pattern="[0-9]{5}" required>
+        <br>
+        <label style="width:100px;float: left;">Kaupunki:</label>
+        <input type="text" name="city" value="{{ restaurant.get('location', {}).get('city','') }}" required>
+        <br>
+    </p>
+    <p>
+        <h4>Aukioloajat</h4>
+        <textarea name="opening_hours" rows="6" cols="25" required>{{ restaurant.get('opening_hours','') }}</textarea>
+    </p>
+    <p>
+        <h4>Kategoriat</h4>
+        <div class="categories-select-list">
+            {% for c in categories %}
+        
+            <input type="checkbox" name="categories" value="{{ c.id }}" {% if c.id in restaurant_category %}{{ 'checked' }}{% endif %}> {{ c.name }}
+            <br>
+            {% endfor %}
+        </div>
+    </p>
+    <!-- <p>
+        <h4>Kuva</h4>
+        <input name="file" type="file">
+    </p> -->
+    <br>
+    <p>
+        <input type="hidden" name="id" value="{{ restaurant.get('id') }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="old_info" value="{{ restaurant }}">
+        {% if notice %}
+            <p><div class="error">{{ notice }}</div></p>
+        {% endif %}
+        <input type="submit" id="submit" value="{% if restaurant %}Päivitä{% else %}Lähetä{% endif %}">
+    </p>
+</form>   
+

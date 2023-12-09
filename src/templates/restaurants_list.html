@@ -1,0 +1,53 @@
+{% extends "restaurants.html" %}
+{% block content %}
+{{ super() }}
+
+
+{% include 'Forms/search_form.html' %}
+
+<hr> 
+{% if session.get("admin", False) %}
+<div class="new-restaurant">
+    {% if notice %}
+    {{ notice }}
+    {% endif %}
+    <form action="/restaurant/new" method="GET">
+        <input type="submit" value="Lisää" class="btn btn-add">
+    </form>
+</div>
+{% endif %}
+
+<table class="table accordion table-striped table-hover">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+
+    <tr>
+        <th>Ravintola</th>
+        <th>Osoite</th>
+        <th>Aukioloajat</th>
+        {% if session.get("username", None) %}
+        <th></th>
+        {% endif %}
+    </tr>
+
+    {% for r in restaurants %}
+    <tr>
+        <td><a href="/restaurants/{{ r.id }}">{{ r.name }}</a></td>
+        <td>{{ r.location.street }}, {{ r.location.city }}</td>
+        <td>{{ r.opening_hours }}</td>
+        {% if session.get("username", None) %}
+        <td align="right">
+            <a href="/ratings/new/{{ r.id }}">Arvostele</a>
+            {% if session.get("admin", False) %}
+            &nbsp;<a href="/restaurants/{{ r.id }}/edit">Muokkaa</a>
+            {% endif %}
+        </td>  
+        {% endif %}
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "ratings.html" %}
+
+{% block content %}
+
+
+<h2>Arviot</h2>
+<br> 
+<h4>{{ res.name }}</h4>
+<table>
+    {{ ratings.name }}
+    {% for r in ratings %}
+        <hr>
+        <p>
+            {{ r.username }} - {{ r.created.strftime('%d.%m.%Y %H:%M') }}: 
+        </p>
+        <p>Arvosana: {{ r.stars }}<br></p>
+
+        {% if r.comment != "" %}
+            <p>{{ r.comment }}<br></p>
+        {% endif %}
+        {% if session.get("admin", False) %}
+        <form action="/ratings/{{ r.id }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
+            <input type="hidden" name="restaurant_id" value="{{ res.id }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <input type="submit" value="Poista">
+        </form>
+        {% endif %}
+    {% endfor %}
+</table>
+<hr>
+<br>
+<a href="/ratings">Takaisin</a>
+{% endblock %}

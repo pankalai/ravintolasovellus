@@ -1,0 +1,84 @@
+body {
+    margin: auto;
+    max-width: 50em;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+nav {
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+.error {
+    color: red;
+    margin: 15px 0px 15px 0px;
+}
+
+#map {height: 100%;width: 100vw;}
+
+.btn {
+    display:inline-block;
+    margin-bottom:0;
+    font-weight:400;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align:middle;
+    -ms-touch-action:manipulation;
+    touch-action:manipulation;
+    cursor:pointer;
+    background-image:none;
+    border:1px solid transparent;
+    padding:6px 12px;
+    font-size:14px;
+    line-height:1.42857143;
+    border-radius:4px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+
+.btn-add {
+    /* color:#fff; */
+    /* background-color:#337ab7; */
+    border-color:#a4aaaf !important;
+}
+
+.badge{
+    display:inline-block;
+    padding:.25em .4em;
+    font-size:75%;
+    font-weight:700;
+    line-height:1;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align:baseline;
+    border-radius:.25rem
+}
+
+.badge-category{
+    color:#fff;
+    background-color:#17a2b8
+}
+
+.categories-select-list{
+    width:200px;
+    /* padding-right:15px;
+    padding-left:15px;
+    margin-right:auto;
+    margin-left:auto; */
+    max-height: 150px;
+    overflow: auto
+
+}
+
+.new-restaurant {
+    float: right;
+    padding-right: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.search-buttons-row {
+    margin-top: 20px;
+    display: inline-block;
+}

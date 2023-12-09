@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+<h2>Etusivu</h2>
+
+
+{% if session.get("username", None) is none %}
+    Tervetuloa ravintolasovellukseen!
+    <br><br>
+    <form action="/login" method="POST">
+        <p>
+            <div>
+                <label style="width:75px;float: left;">Tunnus:</label> 
+                <input type="text" name="username" style="width:150px;">
+            </div>
+        </p>
+        <p>
+            <label style="width:75px;float: left;">Salasana:</label>
+            <input type="password" name="password" style="width:150px;">
+        </p>
+        <p style="margin-left: 75px;">
+            <input type="submit" value="Kirjaudu" style="width:158px;">
+        </p>
+    </form>
+    <br>
+        <a href="/register">Rekisteröidy</a>
+
+{% else %}
+Tervetuloa {{ session.get("username") }}!
+{% endif %}
+{% endblock %}

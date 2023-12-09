@@ -1,0 +1,18 @@
+{% extends "ratings.html" %}
+
+{% block content %}
+
+<h2>Arviot</h2>
+<p>
+    <h3>{{ restaurant.name}}</h3>
+</p>
+<br>
+<p>
+    {{ restaurant.location.street}}<br>
+    {{ restaurant.location.zip}}<br>
+    {{ restaurant.location.city}}
+</p>
+<br>
+{% include 'Forms/rating_form.html' %}
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}Kirjautuminen{% endblock %}
+{% block content %}
+
+<h2>Kirjaudu</h2>
+<br>
+{% if notice %}
+<div class="error">{{ notice | safe }}</div>
+{% endif %}
+
+{% include 'Forms/login_form.html' %}
+
+{% endblock %}

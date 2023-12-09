@@ -2,7 +2,6 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE,
     admin BOOLEAN NOT NULL,
     created TIMESTAMP NOT NULL,
     modified TIMESTAMP
@@ -43,7 +42,8 @@ CREATE TABLE restaurants_categories (
     restaurant_id INT NOT NULL,
     category_id INT NOT NULL,
     CONSTRAINT fk_restaurant FOREIGN KEY(restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
-    CONSTRAINT fk_group FOREIGN KEY(category_id) REFERENCES categories (id) ON DELETE CASCADE
+    CONSTRAINT fk_group FOREIGN KEY(category_id) REFERENCES categories (id) ON DELETE CASCADE,
+    UNIQUE (restaurant_id, category_id)
 );
 
 CREATE TABLE visits ( 

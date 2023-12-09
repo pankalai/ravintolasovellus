@@ -45,6 +45,7 @@ def register():
         password2 = request.form["password2"]
 
         success, info = user_s.register(username, password1, password2)
+
         if not success:
             return render_template(
                 "register.html",

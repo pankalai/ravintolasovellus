@@ -19,18 +19,14 @@ class UserService:
         if not self.password_valid(password1):
             return False, self.password_requirements()
 
-        valid, info = self.username_valid(username)
-        if not valid:
-            return False, info
-
         hash_value = generate_password_hash(password1)
-        try:
-            db.add_user(username, hash_value)
-        except Exception as err:
-            return False, "Rekisteröinti ei onnistunut, yritä myöhemmin uudelleen"
-
-        self.login(username, hash_value)
-        return True
+        
+        info = db.add_user(username, hash_value)
+        if info:
+            return False, info
+        
+        self.login(username, password1)
+        return True, ""
 
     def login(self, username, password):  
         user = db.get_user(username)
@@ -55,13 +51,10 @@ class UserService:
         del session["admin"]
 
     def username_valid(self, username):
-        user = db.get_user(username)
-        if user:
-            return False, "Tunnus on jo käytössä"
-        return True
+        return 3 <= len(username) <= 30
 
     def password_valid(self, password):
-        reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$"
+        reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$"
 
         pattern = re.compile(reg)
         valid = re.search(pattern, password)

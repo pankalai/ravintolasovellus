@@ -15,10 +15,14 @@ class DatabaseService:
     def add_user(self, username, password):
         sql = """INSERT INTO users (username, password, admin, created)
         VALUES (:username, :password, :admin, now())"""
-        db.session.execute(
-            text(sql), {"username": username, "password": password, "admin": False}
-        )
-        db.session.commit()
+        try:
+            db.session.execute(
+                text(sql), {"username": username, "password": password, "admin": False}
+            )
+            db.session.commit()
+        except exc.IntegrityError:
+            db.session.rollback()
+            return "Tunnus on jo käytössä"
 
     def get_user(self, username):
         sql = "SELECT id, username, password, admin FROM users WHERE username=:username"

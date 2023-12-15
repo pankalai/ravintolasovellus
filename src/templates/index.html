@@ -7,9 +7,7 @@
     <div class="frontpage-login">
         {% if session.get("username", None) is none %}
             <strong>Tervetuloa ravintolasovellukseen!</strong>
-            <br><br>
-            {% include 'Forms/login_form.html' %}
-            <br>
+            {% include "Forms/login_form.html" %}
             <a href="/register">Rekisteröidy</a>
         {% else %}
             Tervetuloa {{ session.get("username") }}!
@@ -19,16 +17,6 @@
         
     </div>
 
-    <div class="frontpage-info">
-        <strong>Tietoa palvelusta:</strong> <br>
-        Ravintoloita: 243 <br>
-        Arvioita: 100 <br><br>
-
-        Viimeksi lisätty:<br>
-        Ravintola1<br>
-        Ravintola2<br>
-        Ravintola3<br>
-    </div>
 
 
 

@@ -12,11 +12,11 @@
         <br>
         <p><i>{{ restaurant.description }}</i></p>
 
-        <p style="padding: 1em 0em;">{{ restaurant.opening_hours.replace('\n','<br>') | safe }}</p>
+        <p style="padding: 1em 0em;">{{ restaurant.opening_hours.replace("\n","<br>") | safe }}</p>
         <p>
-            {{ restaurant.get('location', {}).get('street','') }}<br>
-            {{ restaurant.get('location', {}).get('zip','') }}<br>
-            {{ restaurant.get('location', {}).get('city','') }}
+            {{ restaurant.get("location", {}).get("street","") }}<br>
+            {{ restaurant.get("location", {}).get("zip","") }}<br>
+            {{ restaurant.get("location", {}).get("city","") }}
         </p>
         <br>
         <p>
@@ -27,7 +27,7 @@
             {% endfor %}
         </p>
         <br>
-        <a href="{{ session['previous_url'] }}">Takaisin</a> 
+        <a href="{{ session["previous_url"] }}">Takaisin</a> 
     </div>
 
     <div class="restaurant-image">

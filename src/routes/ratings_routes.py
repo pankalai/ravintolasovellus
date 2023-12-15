@@ -11,7 +11,7 @@ from services.rating_service import rating_service as rat_s
 def show_ratings():
     rat = rat_s.get_ratings()
     cat = cat_s.get_categories()
-    notice = request.args.get('notice')
+    notice = request.args.get("notice")
     session["previous_url"] = url_for("show_ratings")
     return render_template(
         "ratings.html", ratings=rat, categories=cat, entity="ratings", notice=notice
@@ -43,7 +43,7 @@ def send_rating():
     stars = request.form.get("stars")
     comment = request.form.get("comment")
     info = rat_s.add_rating(restaurant_id, stars, comment)
-    return redirect(url_for('.show_ratings', notice=info))
+    return redirect(url_for(".show_ratings", notice=info))
 
 
 

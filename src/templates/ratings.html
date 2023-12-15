@@ -7,7 +7,7 @@
 <h2>Arviot</h2>
 </div>
 <br>
-{% include 'Forms/search_form.html' %}
+{% include "Forms/search_form.html" %}
 
 {% if notice %}
     {{ notice }}
@@ -34,7 +34,7 @@
             <td><a href="restaurants/{{ r.id }}">{{ r.name }}</a></td>
             <td style="text-align:center">{{ r.location.city }}</td>
             <td style="text-align:center">{{ r.count }}</td>
-            <td style="text-align:center">{{ '%0.1f'| format(r.average|float) }}</td>
+            <td style="text-align:center">{{ "%0.1f"| format(r.average|float) }}</td>
             {% if session.get("username", None) %}
                 <td style="text-align:right">
                     <a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a>

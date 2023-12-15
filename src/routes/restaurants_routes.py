@@ -14,7 +14,7 @@ def restaurant():
 
 @app.route("/restaurants/<string:list_type>")
 def show_restaurants(list_type):
-    notice = request.args.get('notice')
+    notice = request.args.get("notice")
     all_restaurants = res_s.get_restaurants()
     if list_type == "list":
         categories = cat_s.get_categories()
@@ -116,7 +116,7 @@ def restaurant_send():
     else:
         info = res_s.add_restaurant(name, description, street, zip_code, city, opening_hours, cats)
 
-    return redirect(url_for('.show_restaurants', list_type="list", notice=info))
+    return redirect(url_for(".show_restaurants", list_type="list", notice=info))
 
 
 @app.route("/restaurants/<int:restaurant_id>/ratings")
@@ -134,4 +134,4 @@ def restaurant_delete(restaurant_id):
     if session["csrf_token"] != request.form["csrf_token"] or not user_s.is_admin():
         abort(403)
     info = res_s.hide_restaurant(restaurant_id)
-    return redirect(url_for('.show_restaurants', list_type="list", notice=info))
+    return redirect(url_for(".show_restaurants", list_type="list", notice=info))

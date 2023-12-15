@@ -15,7 +15,7 @@
 </div>
 <br>
 <br>
-{% include 'Forms/new_category_form.html' %}
+{% include "Forms/new_category_form.html" %}
 
 <div class="notice-text">
     {% if notice %}
@@ -37,13 +37,13 @@
             
             <span data-toggle="collapse" data-target="#r{{loop.index}}" role="button">
                 <strong>{{key}}</strong> &ensp;
-                <span class="badge badge-category">{{value['count']}}</span>
+                <span class="badge badge-category">{{value["count"]}}</span>
             </span>
 
 
             <div style="display: flex;float: right;">
 
-                <form action="/categories/{{value['id']}}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
+                <form action="/categories/{{value["id"]}}/delete" method="POST" onsubmit="return confirm("Haluatko varmasti poistaa?");"> 
                     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" style="height: 22.5px" class="btn btn-delete" value="Poista">
                 </form>
@@ -58,7 +58,7 @@
             <div class="panel-body">
                 <table class="table" style="width: 70%;">
                     <tbody>
-                    {% for r in value['restaurants'] %}
+                    {% for r in value["restaurants"] %}
                         <tr>
                             <td>{{r[0]}}</td>
                             <td>{{r[1]}}</td>

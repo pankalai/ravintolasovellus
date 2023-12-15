@@ -52,10 +52,15 @@ class DatabaseService:
         result = db.session.execute(text(sql), {"username": username})
         return result.fetchone()
 
-    def add_visit(self, usr_id):
+    def add_visit(self, user_id):
         sql = "INSERT INTO visits (user_id, time) VALUES (:user_id, now())"
-        db.session.execute(text(sql), {"user_id": usr_id})
+        db.session.execute(text(sql), {"user_id": user_id})
         db.session.commit()
+
+    def get_last_visit(self, user_id):
+        sql = "SELECT time FROM visits WHERE user_id = :user_id ORDER BY time DESC LIMIT 2 OFFSET 1"
+        result = db.session.execute(text(sql), {"user_id": user_id})
+        return result.fetchone()
 
     def get_restaurant(self, restaurant_id, visible = True):
         sql = """SELECT id, name, description, location, opening_hours

@@ -11,8 +11,11 @@
             <a href="/register">Rekisteröidy</a>
         {% else %}
             Tervetuloa {{ session.get("username") }}!
-            <br>
-            Viimeiset arvostelusi:
+            <br><br>
+            {% if last_visit %}
+                Olit viimeksi kirjautuneena:<br>
+                {{ last_visit }}
+            {% endif %}
         {% endif %}
         
     </div>

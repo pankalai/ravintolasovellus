@@ -6,7 +6,11 @@ from services.user_service import user_service as user_s
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    user_id = user_s.get_user_id()
+    last_visit = None
+    if user_id:
+        last_visit = user_s.get_last_visit(user_id)
+    return render_template("index.html", last_visit = last_visit)
 
 
 @app.route("/login", methods=["GET", "POST"])

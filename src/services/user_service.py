@@ -1,7 +1,9 @@
 from secrets import token_hex
+from datetime import datetime
 import re
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
+
 from services.database_service import database_service as db
 
 
@@ -78,6 +80,11 @@ class UserService:
     def get_user_id(self):
         return session.get("user_id", None)
 
+    def get_last_visit(self, user_id):
+        time = db.get_last_visit(user_id)
+        if not time:
+            return None
+        return time.time.strftime("%d.%m.%Y %H:%M")    
 
 
 user_service = UserService()

@@ -9,12 +9,11 @@
     </p>
     <br>
     <p>
-        <h4>Kommentti</h4>
-        <textarea name="comment" rows="5" cols="50" maxlength="500"></textarea>
+        <h4>Kommentti (1000 merkkiä)</h4>
+        <textarea name="comment" rows="5" cols="50" maxlength="1000"></textarea>
     </p>
+    <br>
     <input type="hidden" name="id" value="{{ restaurant.id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="submit" value="Lähetä">
+    <input type="submit" class="btn btn-add" value="Lähetä">
 </form>
-<br>
-<a href="{{ session['previous_url'] }}">Takaisin</a> 

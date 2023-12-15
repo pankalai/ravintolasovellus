@@ -1,5 +1,5 @@
 <form action="/categories/add" method="POST">
-    <input type="text" name="name" minlength="2" required>
+    <input type="text" name="name" minlength="2" required style="vertical-align: middle;">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="submit" id="submit" value="Lisää" class="btn btn-primary">
+    &nbsp;<input type="submit" id="submit" value="Lisää" class="btn btn-add">
 </form>

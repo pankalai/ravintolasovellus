@@ -1,13 +1,15 @@
 
-<form action="/restaurant/send" method="POST">
+<form action="/restaurant/send" method="POST" enctype="multipart/form-data">
     <p>
         <h4>Nimi</h4>
         <input type="text" name="name" value = "{{ restaurant.get('name','')}}" required><br>
     </p>
+    <br>
     <p>
         <h4>Kuvaus</h4>
         <textarea name="description" rows="2" cols="50">{{ restaurant.get('description','') }}</textarea><br>
     </p>
+    <br>
     <p>
         <h4>Sijainti</h4>
         <label style="width:100px;float: left;">Katuosoite:</label>
@@ -20,10 +22,12 @@
         <input type="text" name="city" value="{{ restaurant.get('location', {}).get('city','') }}" required>
         <br>
     </p>
+    <br>
     <p>
         <h4>Aukioloajat</h4>
         <textarea name="opening_hours" rows="6" cols="25" required>{{ restaurant.get('opening_hours','') }}</textarea>
     </p>
+    <br>
     <p>
         <h4>Kategoriat</h4>
         <div class="categories-select-list">
@@ -34,11 +38,12 @@
             {% endfor %}
         </div>
     </p>
-    <!-- <p>
+    <br>
+    <p>
         <h4>Kuva</h4>
         <input name="file" type="file">
-    </p> -->
-    <br>
+    </p>
+    <br><br>
     <p>
         <input type="hidden" name="id" value="{{ restaurant.get('id') }}">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -46,7 +51,7 @@
         {% if notice %}
             <p><div class="error">{{ notice }}</div></p>
         {% endif %}
-        <input type="submit" id="submit" value="{% if restaurant %}Päivitä{% else %}Lähetä{% endif %}">
+        <input type="submit" class="btn btn-add" id="submit" value="{% if restaurant %}Päivitä{% else %}Lähetä{% endif %}">
     </p>
 </form>   
 

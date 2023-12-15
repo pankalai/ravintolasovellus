@@ -7,4 +7,4 @@ app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
 
 
-from routes import routes, restaurants_routes, ratings_routes, categories_routes
+from routes import users_routes, restaurants_routes, ratings_routes, categories_routes

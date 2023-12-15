@@ -1,11 +1,9 @@
 from flask import render_template, redirect, request, url_for, session, abort
 from app import app
 
-from services.map_service import map_service as map_s
 from services.user_service import user_service as user_s
-from services.restaurant_service import restaurant_service as res_s
 from services.category_service import category_service as cat_s
-from services.rating_service import rating_service as rat_s
+
 
 @app.route("/categories")
 def show_categories():

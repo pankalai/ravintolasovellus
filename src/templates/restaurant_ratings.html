@@ -13,6 +13,22 @@
     {{ res.location.zip }}<br>
     {{ res.location.city }}<br>
     <br>
+    
+    {% if session.get("admin", False) %}
+
+        {% if error %}
+        <div class="error-text ">
+                {{ error }}
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="success-text">
+                {{ success }}
+        </div>
+        {% endif %}
+  
+    {% endif %}
+    <br>
     <table>
         {{ ratings.name }}
         {% for r in ratings %}

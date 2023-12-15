@@ -13,35 +13,35 @@ class UserService:
 
     def register(self, username, password1, password2):
         if not self.username_valid(username):
-            return False, self.username_requirements
+            return self.username_requirements
 
         if password1 != password2:
-            return False, "Salasanat eroavat"
+            return "Salasanat eroavat"
 
         if not self.password_valid(password1):
-            return False, self.password_requirements()
+            return self.password_requirements()
 
         hash_value = generate_password_hash(password1)
 
-        info = db.add_user(username, hash_value)
-        if info:
-            return False, info
+        success = db.add_user(username, hash_value)
+        if not success:
+            return "Tunnus on jo käytössä"
 
         self.login(username, password1)
-        return True, ""
+        return None
 
     def login(self, username, password):
         user = db.get_user(username)
         if not user:
-            return False, "Tuntematon käyttäjätunnus"
+            return "Tuntematon käyttäjätunnus"
         if check_password_hash(user.password, password):
             session["user_id"] = user.id
             session["username"] = user.username
             session["admin"] = user.admin
             session["csrf_token"] = token_hex(16)
             self.add_visit(user.id)
-            return True, ""
-        return False, "Virheellinen salasana"
+            return None
+        return "Virheellinen salasana"
 
     def add_visit(self, user_id):
         db.add_visit(user_id)
@@ -83,7 +83,7 @@ class UserService:
     def get_last_visit(self, user_id):
         time = db.get_last_visit(user_id)
         if not time:
-            return None
+            return "-"
         return time.time.strftime("%d.%m.%Y %H:%M")    
 
 

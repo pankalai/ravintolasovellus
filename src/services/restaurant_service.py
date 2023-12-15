@@ -7,19 +7,29 @@ from services.map_service import map_service as map_s
 
 
 class RestaurantService:
-    def add_restaurant(self, name, description, street, zip_code, city, opening_hours, cats):
+    def add_restaurant(self, name, description, street, zip_code, city, opening_hours, cats, image):
         coordinates = self.get_coordinates(street, zip, city)
         longitude = None if not coordinates else coordinates[0]
         latitude = None if not coordinates else coordinates[1]
 
         location = self.form_location(street, zip_code, city, longitude, latitude)
         restaurant_id = db.add_restaurant(name, description, location, opening_hours)
-        db.add_restaurant_category(restaurant_id, cats)
+
+        if not restaurant_id:
+            return False, "Ravintolan lisäys epäonnistui"
+
+        if not db.add_restaurant_category(restaurant_id, cats):
+            return False, "Kategoriatietojen lisääminen epäonnistui"
+
+        if image:
+            result = self.add_image(restaurant_id, image)
+            if result:
+                return False, result
 
         if not coordinates:
-            return self.missing_coodinates_info(street, zip_code, city)
+            return False, self.missing_coodinates_info(street, zip_code, city)
 
-        return None
+        return True, "Ravintola lisättiin"
 
     def update_restaurant(self,
             restaurant_id,
@@ -29,7 +39,8 @@ class RestaurantService:
             zip_code,
             city,
             opening_hours,
-            cats
+            cats,
+            image
         ):
         # Location changed check
         old_info = self.get_restaurant(restaurant_id)
@@ -51,13 +62,22 @@ class RestaurantService:
             latitude = old_info.location.get("latitude")
 
         location = self.form_location(street, zip_code, city, longitude, latitude)
-        db.update_restaurant(restaurant_id, name, description, location, opening_hours)
-        db.add_restaurant_category(restaurant_id, cats)
 
+        if not db.update_restaurant(restaurant_id, name, description, location, opening_hours):
+            return False, "Ravintolan päivitys epäonnistui"
+
+        if not db.add_restaurant_category(restaurant_id, cats):
+            return False, "Kategorioiden päivitys epäonnistui"
+
+        if image:
+            result = self.add_image(restaurant_id, image)
+            if result:
+                return False, result
+                
         if not (longitude and latitude):
-            return self.missing_coodinates_info(street, zip_code, city)
+            return False, self.missing_coodinates_info(street, zip_code, city)
 
-        return None
+        return True, "Ravintolan tiedot päivitettiin"
 
     def form_location(self, street, zip_code, city, lon=None, lat=None):
         location = {}
@@ -98,10 +118,9 @@ class RestaurantService:
         return selected_cat, city, search_text, all_cat
 
     def hide_restaurant(self, restaurant_id):
-        result = db.hide_restaurant(restaurant_id)
-        if result:
-            return "Ravintola poistettu"
-        return "Ravintolan poisto epäonnistui"
+        if not db.hide_restaurant(restaurant_id):
+            return False, "Ravintolan poisto epäonnistui"
+        return True, "Ravintola poistettiin"
 
     def missing_coodinates_info(self, street, zip_code, city):
         return f"Osoitteelle {street} {zip_code} {city} ei löytynyt koordinaatteja"
@@ -113,11 +132,14 @@ class RestaurantService:
         if len(data) > 100*1024:
             return "Tiedosto on liian iso"
 
-        if not name.endswith(".jpg"):
-            return "Virheellinen tiedostomuoto"
+        if not (name.endswith(".jpg") or name.endswith(".png") or name.endswith(".gif")):
+            return "Virheellinen kuvan tiedostomuoto (muu kuin jpg, png tai gif)"
 
-        db.delete_image(restaurant_id)
-        db.upload_image(restaurant_id, name, data)
+        if not db.delete_image(restaurant_id):
+            return "Vanhan kuvan poistaminen epäonnistui"
+
+        if not db.upload_image(restaurant_id, name, data):
+            return "Kuvan lataus epäonnistui"
 
         return None
 

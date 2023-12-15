@@ -3,10 +3,15 @@ from services.database_service import database_service as db
 
 class CategoryService:
     def add_category(self, name):
-        return db.add_category(name)
+        success = db.add_category(name)
+        if not success:
+            return "Kategorian lisääminen epäonnistui"
+        return None
 
     def delete_category(self, category_id):
-        return db.delete_category(category_id)
+        if not db.delete_category(category_id):
+            return "Kategorian poistaminen epäonnistui"
+        return None
 
     def get_restaurant_categories(self, restaurant_id):
         return db.get_restaurant_categories(restaurant_id)

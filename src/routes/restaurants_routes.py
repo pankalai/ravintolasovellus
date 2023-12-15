@@ -14,7 +14,8 @@ def restaurant():
 
 @app.route("/restaurants/<string:list_type>")
 def show_restaurants(list_type):
-    notice = request.args.get("notice")
+    error = request.args.get("error")
+    success = request.args.get("success")
     all_restaurants = res_s.get_restaurants()
     if list_type == "list":
         categories = cat_s.get_categories()
@@ -24,7 +25,8 @@ def show_restaurants(list_type):
             restaurants=all_restaurants,
             categories=categories,
             entity="restaurants",
-            notice=notice
+            error=error,
+            success=success
         )
     if list_type == "map":
         markers = res_s.get_info_for_map()
@@ -106,26 +108,25 @@ def restaurant_send():
     city = request.form.get("city").lstrip().rstrip()
     file = request.files.get("file")
 
-    if file:
-        res_s.add_image(restaurant_id, file)
-
     if restaurant_id:
-        info = res_s.update_restaurant(
-            restaurant_id, name, description, street, zip_code, city, opening_hours, cats
+        success, info = res_s.update_restaurant(
+            restaurant_id, name, description, street, zip_code, city, opening_hours, cats, file
         )
     else:
-        info = res_s.add_restaurant(name, description, street, zip_code, city, opening_hours, cats)
+        success, info = res_s.add_restaurant(name, description, street, zip_code, city, opening_hours, cats, file)
 
-    return redirect(url_for(".show_restaurants", list_type="list", notice=info))
+    if success:
+        return redirect(url_for(".show_restaurants", list_type="list", success=info))
+    return redirect(url_for(".show_restaurants", list_type="list", error=info))
 
 
 @app.route("/restaurants/<int:restaurant_id>/ratings")
 def show_restaurant_ratings(restaurant_id):
+    error = request.args.get("error")
+    success = request.args.get("success")
     res = res_s.get_restaurant(restaurant_id)
-    if not res:
-        return redirect("/ratings")
     rat = rat_s.get_restaurants_ratings(restaurant_id)
-    return render_template("restaurant_ratings.html", ratings=rat, res=res)
+    return render_template("restaurant_ratings.html", ratings=rat, res=res, error=error, success=success)
 
 
 
@@ -133,5 +134,7 @@ def show_restaurant_ratings(restaurant_id):
 def restaurant_delete(restaurant_id):
     if session["csrf_token"] != request.form["csrf_token"] or not user_s.is_admin():
         abort(403)
-    info = res_s.hide_restaurant(restaurant_id)
-    return redirect(url_for(".show_restaurants", list_type="list", notice=info))
+    success, info = res_s.hide_restaurant(restaurant_id)
+    if not success:
+        return redirect(url_for(".show_restaurants", list_type="list", error=info))
+    return redirect(url_for(".show_restaurants", list_type="list", success=info))

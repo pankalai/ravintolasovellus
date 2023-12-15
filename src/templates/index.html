@@ -12,9 +12,9 @@
         {% else %}
             Tervetuloa {{ session.get("username") }}!
             <br><br>
+            Olit viimeksi kirjautuneena:<br>
             {% if last_visit %}
-                Olit viimeksi kirjautuneena:<br>
-                {{ last_visit }}
+            {{ last_visit }}
             {% endif %}
         {% endif %}
         

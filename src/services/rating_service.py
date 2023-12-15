@@ -21,15 +21,15 @@ class RatingService:
                 if (datetime.now()-last_rating).days == 0:
                     return "Olet jo antanut arvion ravintolasta tänään"
 
-
-            result = db.add_rating(user_id, restaurant_id, stars, comment)
-            if not result:
+            if not db.add_rating(user_id, restaurant_id, stars, comment):
                 return "Arvion lisääminen epäonnistui"
 
         return None
 
     def hide_rating(self, rating_id):
-        db.hide_rating(rating_id)
+        if not db.hide_rating(rating_id):
+            return False, "Arvion poistaminen epäonnistui"
+        return True, "Arvio poistettiin"
 
 
 

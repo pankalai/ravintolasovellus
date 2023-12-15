@@ -57,6 +57,9 @@ def new_rating(restaurant_id):
 def hide_rating(rating_id):
     if session["csrf_token"] != request.form["csrf_token"] or not user_s.is_admin():
         abort(403)
-    rat_s.hide_rating(rating_id)
+    success, info = rat_s.hide_rating(rating_id)
     re_id = request.form["restaurant_id"]
-    return redirect("/restaurants/" + re_id + "/ratings")
+    if success:
+        return redirect(url_for(".show_restaurant_ratings", restaurant_id=re_id, success=info))
+    return redirect(url_for(".show_restaurant_ratings", restaurant_id=re_id, error=info))
+    #return redirect("/restaurants/" + re_id + "/ratings")

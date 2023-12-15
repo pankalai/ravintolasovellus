@@ -128,17 +128,17 @@ div.search-button {
 }
 
 div.restaurant {
-    margin: 3em 3.5em;
+    margin: 3em 3em;
     display: grid;
     align-items: center; 
     grid-template-columns: 1fr 1fr;
     column-gap: 0.5em;
-    /* justify-items: center; */
+    justify-items: center;
 }
 
 div.restaurant-text {
    align-self: start;
-   padding-left: 3em;
+   /* padding-left: 1.5em; */
 }
 
 div.restaurant-image {
@@ -278,15 +278,25 @@ table.restaurants {
     flex-wrap: wrap;
     margin: auto;
     vertical-align: middle;
+    padding-left: 0.5em
     /* padding-top: 2em;
     padding-bottom: 2em;
     background-color: rgb(255, 255, 255); */
 }
-.notice-text {
+.error-text {
     float: left;
     /* padding-left: 1em; */
     color: red;
-    margin-left: 0.5em;
+    /* margin-left: 0.5em; */
+    margin-bottom: 0.75em;
+    margin-top: 0.25em;
+}
+
+.success-text {
+    float: left;
+    /* padding-left: 1em; */
+    color: rgb(31, 143, 31);
+    /* margin-left: 0.5em; */
     margin-bottom: 0.75em;
     margin-top: 0.25em;
 }

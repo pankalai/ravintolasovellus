@@ -1,7 +1,12 @@
-{% extends "restaurants.html" %}
+{% extends "layout.html" %}
 {% block content %}
 
 {{ super() }}
+
+<br>
+<div style="text-align: center;">
+    <h2>Ravintolat</h2>
+</div>
 
 <div class="content-subpage">
     {% include "Forms/restaurant_form.html" %}

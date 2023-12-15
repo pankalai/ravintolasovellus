@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, url_for
 from app import app
 
 from services.user_service import user_service as user_s
@@ -15,14 +15,13 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    info = None
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        success, info = user_s.login(username, password)
-        if success:
-            return redirect("/")
-        return render_template("login.html", notice=info)
-    return render_template("login.html")
+        info = user_s.login(username, password)
+
+    return redirect(url_for(".index", notice=info))
 
 
 @app.route("/logout")
@@ -40,9 +39,9 @@ def register():
         password1 = request.form["password1"]
         password2 = request.form["password2"]
 
-        success, info = user_s.register(username, password1, password2)
+        info = user_s.register(username, password1, password2)
 
-        if not success:
+        if info:
             return render_template(
                 "register.html",
                 notice=info,

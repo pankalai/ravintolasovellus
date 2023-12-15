@@ -10,11 +10,16 @@
 
 {% if session.get("admin", False) %}
 <div class="notice-panel">
-    <div class="notice-text ">
-        {% if notice %}
-            {{ notice }}
-        {% endif %}
+    {% if error %}
+    <div class="error-text ">
+            {{ error }}
     </div>
+    {% endif %}
+    {% if success %}
+    <div class="success-text">
+            {{ success }}
+    </div>
+    {% endif %}
     <div class="new-restaurant">
         <form action="/restaurant/new" method="GET">
             <input type="submit" value="Lisää" class="btn btn-add">

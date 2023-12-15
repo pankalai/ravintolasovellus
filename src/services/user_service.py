@@ -20,15 +20,15 @@ class UserService:
             return False, self.password_requirements()
 
         hash_value = generate_password_hash(password1)
-        
+
         info = db.add_user(username, hash_value)
         if info:
             return False, info
-        
+
         self.login(username, password1)
         return True, ""
 
-    def login(self, username, password):  
+    def login(self, username, password):
         user = db.get_user(username)
         if not user:
             return False, "Tuntematon käyttäjätunnus"
@@ -69,12 +69,14 @@ class UserService:
             Yksi pieni kirjain</li><li>Yksi iso kirjain</li><li>Yksi numero</li>
             <li>Pituus vähintään 8 ja korkeintaan 20</li></ul>"""
 
-    def username(self, user_id):
-        user = db.get_user(user_id)
-        return user.name
+    def username(self):
+        return session.get("username", None)
 
     def is_admin(self):
         return session.get("admin", False)
+
+    def get_user_id(self):
+        return session.get("user_id", None)
 
 
 

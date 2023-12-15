@@ -1,16 +1,17 @@
 {% extends "restaurants.html" %}
 {% block content %}
 
+{{ super() }}
+<br>
 
-<form action="/restaurants/{{ restaurant['id'] }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="submit" value="Poista">
-</form>
 
 
 {% include 'Forms/restaurant_form.html' %}
-
-
+<form action="/restaurants/{{ restaurant['id'] }}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="submit" value="Poista" class="btn btn-delete">
+</form>
+<br><br>
 <a href="/restaurants">Takaisin</a>
 
 {% endblock %}

@@ -3,19 +3,40 @@
 
 {{ super() }}
 
+<br><br>
+<div class="restaurant">
 
-<p><strong>{{ restaurant.name }}</strong></p>
+    <div class="restaurant-text">
 
+        <p><h3>{{ restaurant.name }}</h3></p>
+        <br>
+        <p><i>{{ restaurant.description }}</i></p>
 
-<p><i>{{ restaurant.description }}</i></p>
-<p>{{ restaurant.opening_hours.replace('\n','<br>') | safe }}</p>
-<p>
-    {% for c in categories %}
-        <span class="badge badge-category">
-        <i>{{ c.name }}</i>
-        </span>
-    {% endfor %}
-</p>
-<br>
-<a href="{{ session['previous_url'] }}">Takaisin</a> 
+        <p style="padding: 1em 0em;">{{ restaurant.opening_hours.replace('\n','<br>') | safe }}</p>
+        <p>
+            {{ restaurant.get('location', {}).get('street','') }}<br>
+            {{ restaurant.get('location', {}).get('zip','') }}<br>
+            {{ restaurant.get('location', {}).get('city','') }}
+        </p>
+        <br>
+        <p>
+            {% for c in categories %}
+                <span class="badge badge-category">
+                <i>{{ c.name }}</i>
+                </span>
+            {% endfor %}
+        </p>
+        <br>
+        <a href="{{ session['previous_url'] }}">Takaisin</a> 
+    </div>
+
+    <div class="restaurant-image">
+        {% if image %}
+        <img class="restaurant_picture" src="data:;base64,{{ image }}" >
+        {% endif %}
+    </div>
+
+    
+</div>
+
 {% endblock %}

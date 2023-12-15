@@ -1,9 +1,11 @@
-{% extends "ratings.html" %}
+{% extends "layout.html" %}
 
 {% block content %}
-
-
-<h2>Arviot</h2>
+{{ super() }}
+<br>
+<div style="text-align: center;">
+    <h2>Arviot</h2>
+</div>
 <br> 
 <h4>{{ res.name }}</h4>
 <table>

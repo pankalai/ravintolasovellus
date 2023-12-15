@@ -7,18 +7,11 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <br>
 
-<div id="map" style="height: 450px; width: 100%;"></div>
+<div id="map" style="height: 550px; width: 100%;"></div>
 
 
 <script src="{{ url_for('static', filename='map.js') }}" lat="{{ user_lat }}" lon="{{ user_lon }}" markers="{{ markers }}"></script>
 
-<!-- <script type="text/javascript">
-    {% for marker in markers %}
-      var m = L.marker([{{ marker['lat'] }}, {{ marker['lon'] }}]).addTo(map)
-      m.bindPopup("{{ marker['info'] | safe }}")
-      m.bindTooltip("{{ marker['name'] | safe }}");
-    {% endfor %}
-</script> -->
 
 
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="/static/bootstrap5.css"/>
+<link rel="stylesheet" href="/static/bootstrap_table.css"/>
+<link rel="stylesheet" href="/static/bootstrap_accordion.css"/>
+<link rel="stylesheet" href="/static/style.css"/>
+
+
+<body>
+
+    <title>Ravintolat - {% block title %}{% endblock %}</title>
+    <div class="content">
+
+        <div class="nav">
+            <div class="col-9 nav-bar-sections">
+              
+                    <div class="nav-text"><a href="/">Etusivu</a></div>
+                    <div class="nav-text"><a href="/restaurants">Ravintolat</a></div>
+                    <div class="nav-text"><a href="/ratings">Arviot</a></div>
+
+                    {% if session.get("admin", False) %}
+                    <div class="nav-text"><a href="/categories">Kategoriat</a></div>
+                    {% endif %}
+                
+            </div>
+            <div class="col-3">
+                <div class="nav-bar-user">
+                    {% if not session.get("username") %}
+                    <div class="nav-text"><a href="/">Kirjaudu</a></div>
+                    <div class="nav-text"><a href="/register">Rekisteröidy</a></div>
+                    {% else %}
+                    <div class="nav-text">{{ session.get("username") }}</div>
+                    <div class="nav-text"><a href="/logout">Kirjaudu ulos</a></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+      
+        <div class="center-frame">
+            <div class="center-content">
+            {% block content %}
+            
+            {% endblock %}
+            </div>
+          
+        </div>
+
+    </div>  
+</body>

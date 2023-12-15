@@ -1,7 +1,6 @@
 import re
 import requests
 from requests.structures import CaseInsensitiveDict
-from flask import session
 
 
 API_KEY = "94549be1b28d405fbf7d40a5ca43dae6"
@@ -14,7 +13,7 @@ class MapService:
     def __init__(self, api_key):
         self._latitude = self.DEFAULT_LATITUDE
         self._longitude = self.DEFAULT_LONGITUDE
-        self._API_KEY = api_key
+        self._api_key = api_key
 
     def get_coordinates_for_address(self, address, postcode, city, country="Finland"):
         street, housenumber = self.split_address_to_street_and_housenumber(address)
@@ -29,7 +28,7 @@ class MapService:
             + f"postcode={postcode}&"
             + f"city={city}&"
             + f"country={country}&"
-            + f"apiKey={self._API_KEY}"
+            + f"apiKey={self._api_key}"
         )
 
         headers = CaseInsensitiveDict()

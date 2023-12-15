@@ -1,8 +1,30 @@
-from db import db, text, exc
 import json
+
+from db import db, text, exc
 
 
 class DatabaseService:
+
+    def form_query(self, sql, category=None, city=None, word=None):
+        data = {}
+
+        if category:
+            data["category_id"] = tuple(category)
+            sql += """ and res.id in (select restaurant_id from restaurants_categories
+                where category_id in :category_id)"""
+        if city:
+            data["city"] = city.lower()
+            sql += " and lower(location->>'city') = :city"
+        if word:
+            word = word.lower()
+            data["word"] = word
+            sql = (
+                sql
+                + """ and (lower(description) like '%' || :word || '%'
+                or lower(name) like '%' || :word || '%')"""
+            )
+        return sql, data
+
     def get_all_columns_from_table(self, table, order_by=None, only_first_row=False):
         sql = "SELECT * FROM " + table
         if order_by:
@@ -23,6 +45,7 @@ class DatabaseService:
         except exc.IntegrityError:
             db.session.rollback()
             return "Tunnus on jo käytössä"
+        return None
 
     def get_user(self, username):
         sql = "SELECT id, username, password, admin FROM users WHERE username=:username"
@@ -35,7 +58,7 @@ class DatabaseService:
         db.session.commit()
 
     def get_restaurant(self, restaurant_id, visible = True):
-        sql = """SELECT id, name, description, location, opening_hours 
+        sql = """SELECT id, name, description, location, opening_hours
                  FROM restaurants
                  WHERE visible = :visible and id = :id"""
         result = db.session.execute(text(sql), {"visible": visible, "id": restaurant_id})
@@ -47,24 +70,7 @@ class DatabaseService:
         FROM restaurants as res
         WHERE visible = true"""
 
-        if category:
-            data["category_id"] = tuple(category)
-            sql = (
-                sql
-                + """ and res.id in (select restaurant_id from restaurants_categories
-                where category_id in :category_id)"""
-            )
-        if city:
-            data["city"] = city.lower()
-            sql = sql + " and lower(location->>'city') = :city"
-        if word:
-            data["word"] = word.lower()
-            # This needs to be modified
-            sql = (
-                sql
-                + f""" and (lower(description) like '%{word.lower()}%'
-                or lower(name) like '%{word.lower()}%')"""
-            )
+        sql, data = self.form_query(sql, category,city,word)
 
         sql += " ORDER BY name"
         result = db.session.execute(
@@ -74,10 +80,12 @@ class DatabaseService:
         return result.fetchall()
 
     def add_restaurant(self, name, description, location, opening_hours):
-        sql = """INSERT INTO restaurants (name, description, location, opening_hours, visible, created)
-        VALUES (:name,:description,:location,:opening_hours,:visible, now()) RETURNING id"""
+        sql = """INSERT INTO restaurants
+        (name, description, location, opening_hours, visible, created)
+        VALUES (:name,:description,:location,:opening_hours,:visible, now()) 
+        RETURNING id"""
 
-        if type(location) is dict:
+        if isinstance(location, dict):
             location = json.dumps(location, indent=4)
 
         result = db.session.execute(
@@ -92,9 +100,9 @@ class DatabaseService:
         )
         db.session.commit()
         return result.fetchone()[0]
-        
 
-    def update_restaurant(self, restaurant_id, name, description, location, opening_hours, cat=None
+
+    def update_restaurant(self, restaurant_id, name, description, location, opening_hours
     ):
         sql = """UPDATE restaurants SET
         name = :name, 
@@ -105,7 +113,7 @@ class DatabaseService:
         modified = now()
         WHERE id = :restaurant_id"""
 
-        if type(location) is dict:
+        if isinstance(location, dict):
             location = json.dumps(location, indent=4)
 
         db.session.execute(
@@ -122,9 +130,16 @@ class DatabaseService:
         db.session.commit()
 
     def hide_restaurant(self, restaurant_id):
-        sql = "UPDATE restaurants SET visible = :visible, modified = now() WHERE id = :restaurant_id"
-        db.session.execute(text(sql), {"restaurant_id": restaurant_id, "visible": False})
-        db.session.commit()
+        sql = """UPDATE restaurants SET visible = :visible, modified = now()
+                WHERE id = :restaurant_id"""
+        try:
+            db.session.execute(text(sql), {"restaurant_id": restaurant_id, "visible": False})
+            db.session.commit()
+        except Exception as error:
+            print("Tapahtui virhe: ", error)
+            db.session.rollback()
+            return False
+        return True
 
     def get_ratings(self, category=None, city=None, word=None):
         sql = """SELECT res.*,t.average, t.count
@@ -134,28 +149,29 @@ class DatabaseService:
                     FROM ratings as ra
                     LEFT JOIN restaurants as res ON res.id = ra.restaurant_id
                     WHERE res.visible is True and ra.visible is True"""
-        data = {}
-        if category:
-            data["category_id"] = tuple(category)
-            sql += """ and res.id in (select restaurant_id from restaurants_categories
-                where category_id in :category_id)"""
-        if city:
-            data["city"] = city.lower()
-            sql += " and lower(location->>'city') = :city"
-        if word:
-            data["word"] = word.lower()
-            # This needs to be modified
-            sql = (
-                sql
-                + f""" and (lower(description) like '%{word.lower()}%'
-                or lower(name) like '%{word.lower()}%')"""
-            )
 
-        sql += """ GROUP BY res.id ) as t on t.id=res.id 
+        sql, data = self.form_query(sql, category,city,word)
+
+        sql += """ GROUP BY res.id ) as t on t.id=res.id
             ORDER BY t.average desc, t.count desc"""
 
         result = db.session.execute(text(sql), data)
         return result.fetchall()
+
+
+    def get_rating_by_restaurant_and_user(self, user_id, restaurant_id):
+        sql = """SELECT created FROM ratings
+               WHERE user_id = :user_id AND restaurant_id = :restaurant_id
+               ORDER BY created DESC"""
+        result = db.session.execute(
+            text(sql),
+            {"restaurant_id": restaurant_id, "user_id": user_id},
+        )
+
+        if result.rowcount == 0:
+            return None
+
+        return result.fetchone()[0]
 
     def get_restaurants_ratings(self, restaurant_id, visible = True):
         sql = """SELECT r.id, stars, comment, r.created, u.username FROM ratings as r
@@ -169,6 +185,27 @@ class DatabaseService:
         )
         return result.fetchall()
 
+    def add_rating(self, user_id, restaurant_id, stars, comment):
+        sql = """INSERT INTO ratings (user_id, restaurant_id, stars, comment, visible, created)
+        VALUES (:user_id,:restaurant_id,:stars,:comment,:visible, now())"""
+        db.session.execute(
+            text(sql),
+            {
+                "user_id": user_id,
+                "restaurant_id": restaurant_id,
+                "stars": stars,
+                "comment": comment,
+                "visible": True,
+            },
+        )
+        db.session.commit()
+
+    def hide_rating(self, rating_id):
+        sql = (
+            "UPDATE ratings SET visible = :visible, modified = now() WHERE id = :rating_id"
+        )
+        db.session.execute(text(sql), {"rating_id": rating_id, "visible": False})
+        db.session.commit()
 
     def add_category(self, name):
         sql = "INSERT INTO categories (name, created) VALUES (:name, now())"
@@ -178,7 +215,8 @@ class DatabaseService:
         except exc.IntegrityError:
             db.session.rollback()
             return "Kategoria on jo olemassa"
-        
+        return None
+
 
     def delete_category(self, category_id):
         sql = "DELETE FROM categories WHERE id = :category_id"
@@ -187,7 +225,7 @@ class DatabaseService:
 
 
     def get_restaurant_categories(self, restaurant_id):
-        sql = """SELECT cat.id, cat.name 
+        sql = """SELECT cat.id, cat.name
                  FROM restaurants_categories as res_cat
                  JOIN categories cat ON cat.id = res_cat.category_id 
                  WHERE restaurant_id = :restaurant_id"""
@@ -221,6 +259,23 @@ class DatabaseService:
         ORDER BY cat.name"""
         result = db.session.execute(text(sql))
         return result.fetchall()
+
+    def delete_image(self, restaurant_id):
+        sql = "DELETE FROM images WHERE restaurant_id = :restaurant_id"
+        db.session.execute(text(sql), {"restaurant_id": restaurant_id})
+        db.session.commit()
+
+    def upload_image(self, restaurant_id, name, data):
+        sql = "INSERT INTO images (restaurant_id, name, data) VALUES (:restaurant_id, :name, :data)"
+        db.session.execute(text(sql), {"restaurant_id":restaurant_id, "name":name, "data":data})
+        db.session.commit()
+
+    def download_image(self, restaurant_id):
+        sql = "SELECT data FROM images WHERE restaurant_id = :restaurant_id"
+        result = db.session.execute(text(sql), {"restaurant_id":restaurant_id})
+        if result.rowcount == 0:
+            return None
+        return result.fetchone()[0]
 
 
 database_service = DatabaseService()

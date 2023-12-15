@@ -1,12 +1,16 @@
-{% extends "ratings.html" %}
+{% extends "layout.html" %}
 
 {% block content %}
-
-<h2>Arviot</h2>
+{{ super() }}
+<br>
+<div style="text-align: center;">
+    <h2>Arviot</h2>
+</div>
+<br>
 <p>
     <h3>{{ restaurant.name}}</h3>
 </p>
-<br>
+
 <p>
     {{ restaurant.location.street}}<br>
     {{ restaurant.location.zip}}<br>
@@ -14,5 +18,8 @@
 </p>
 <br>
 {% include 'Forms/rating_form.html' %}
+
+<br><br>
+<a href="{{ session['previous_url'] }}">Takaisin</a> 
 
 {% endblock %}

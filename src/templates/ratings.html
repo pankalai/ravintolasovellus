@@ -1,37 +1,42 @@
 {% extends "layout.html" %}
 {% block title %}Arviot{% endblock %}
 {% block content %}
-
+{{ super() }}
+<br>
+<div style="text-align: center;">
 <h2>Arviot</h2>
-
+</div>
+<br>
 {% include 'Forms/search_form.html' %}
 
-<hr>
-<table class="table accordion table-striped table-hover">
-    <col width="30%">
-    <col width="15%">
-    <col width="12%">
-    <col width="15%">
-    <tbody>
+{% if notice %}
+    {{ notice }}
+{% endif %}
+
+<br>
+<table class="table accordion table-striped table-hover restaurants">
+
+    <thead>
         <tr>
-            <th>Ravintola</th>
-            <th>Kaupunki</th>
-            <th>Arvostelut</th>
-            <th>Keskiarvo</th>
+            <th style="min-width:25%">Ravintola</th>
+            <th style="text-align:center">Kaupunki</th>
+            <th style="text-align:center">Arvostelut</th>
+            <th style="text-align:center">Keskiarvo</th>
             {% if session.get("username", None) %}
             <th></th>
             {% endif %}
         </tr>
+    </thead>
 
-    
+    <tbody>
         {% for r in ratings %}
         <tr>
             <td><a href="restaurants/{{ r.id }}">{{ r.name }}</a></td>
-            <td>{{ r.location.city }}</td>
-            <td align="center">{{ r.count }}</td>
-            <td align="center">{{ '%0.1f'| format(r.average|float) }}</td>
+            <td style="text-align:center">{{ r.location.city }}</td>
+            <td style="text-align:center">{{ r.count }}</td>
+            <td style="text-align:center">{{ '%0.1f'| format(r.average|float) }}</td>
             {% if session.get("username", None) %}
-                <td align="right">
+                <td style="text-align:right">
                     <a href="/restaurants/{{ r.id }}/ratings">Näytä arvostelut</a>
                     &nbsp;
                     <a href="/ratings/new/{{ r.id }}">Arvostele</a>

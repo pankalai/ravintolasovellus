@@ -1,36 +1,32 @@
-<!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/static/style.css"/>
-<link rel="stylesheet" href="/static/bootstrap_table.css"/>
-<link rel="stylesheet" href="/static/bootstrap_accordion.css"/>
+{% extends "layout_base.html" %}
 
 
-<body>
+{% block content %}
 
-    <title>Ravintolat - {% block title %}{% endblock %}</title>
+<style>
 
-    <nav>
-        <a href="/">Etusivu</a>
-        <a href="/restaurants">Ravintolat</a>
-        <a href="/ratings">Arviot</a> 
+    .center-frame {
+        background-image: none;
+    }
 
-        {% if session.get("admin", False) %}
-            <a href="/categories">Kategoriat</a> 
-        {% endif %}
+    .center-frame::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 85vh;
+        background-size: cover;
+        background-image: url('/static/index.jpg');  
+        opacity: 0.25;
+    }
 
-        {% if session.get("username", None) is none %}
-            | <a href="/login">Kirjaudu</a>
-            <a href="/register">Rekisteröidy</a>
-        {% else %}
-            | {{ session.get("username") }}
-            <a href="/logout">Kirjaudu ulos</a>
-        {% endif %}
-    </nav>
+    .center-content {
+        background-color:  rgb(255, 255, 255);
+        border-top: solid;
+        border-color: rgb(235, 235, 235);
+        
+    }
+    
+  
+</style>
 
-    <div style="height:75%;">
-    {% block content %}
-    {% endblock %}
-    </div>
-
-
-</body>
+{% endblock %}

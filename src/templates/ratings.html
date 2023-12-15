@@ -9,9 +9,11 @@
 <br>
 {% include "Forms/restaurant_search_form.html" %}
 
-{% if notice %}
-    {{ notice }}
-{% endif %}
+<div class="notice-text ">
+    {% if notice %}
+        {{ notice }}
+    {% endif %}
+</div>
 
 <br>
 <table class="table accordion table-striped table-hover restaurants">

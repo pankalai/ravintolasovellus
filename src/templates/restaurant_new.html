@@ -1,10 +1,12 @@
-{% extends "layout.html" %}
-
+{% extends "restaurants.html" %}
 {% block content %}
+
 {{ super() }}
-<br>
-{% include "Forms/restaurant_form.html" %}
-<br>
-<a href="/restaurants">Takaisin</a>
+
+<div class="content-subpage">
+    {% include "Forms/restaurant_form.html" %}
+    <br>
+    <a href="/restaurants">Takaisin</a>
+</div>
 
 {% endblock %}

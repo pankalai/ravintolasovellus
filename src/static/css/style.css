@@ -84,7 +84,7 @@ div.nav-text {
     margin: auto 0;
 }
 
-div.register {
+div.content-subpage {
     margin: 5em;
 }
 .frontpage-info {
@@ -128,16 +128,17 @@ div.search-button {
 }
 
 div.restaurant {
-    margin: 3em 3em;
+    margin: 3em 3.5em;
     display: grid;
     align-items: center; 
     grid-template-columns: 1fr 1fr;
     column-gap: 0.5em;
-    justify-items: center;
+    /* justify-items: center; */
 }
 
 div.restaurant-text {
    align-self: start;
+   padding-left: 3em;
 }
 
 div.restaurant-image {

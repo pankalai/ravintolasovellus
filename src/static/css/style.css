@@ -41,7 +41,7 @@ div.nav-text {
 .center-frame {
     width: 100%;
     height: 85vh;
-    background-image: url("index.jpg");  
+    background-image: url("/static/index.jpg");  
     background-size: cover;
     color: rgb(10, 7, 29);
 }

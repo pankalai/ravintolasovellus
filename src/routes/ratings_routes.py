@@ -20,7 +20,7 @@ def show_ratings():
 
 @app.route("/ratings/search", methods=["POST"])
 def search_ratings():
-    sel_cat, city, search_text, cat = res_s.get_info_for_search_form(request)
+    sel_cat, city, search_text, cat = res_s.get_info_for_restaurant_search_form(request)
 
     rat = rat_s.get_ratings(sel_cat, city, search_text)
 

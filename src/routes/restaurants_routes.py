@@ -78,7 +78,7 @@ def edit_restaurant(restaurant_id):
 
 @app.route("/restaurants/search", methods=["POST"])
 def restaurants_search():
-    sel_cat, city, search_text, cat = res_s.get_info_for_search_form(request)
+    sel_cat, city, search_text, cat = res_s.get_info_for_restaurant_search_form(request)
     res = res_s.get_restaurants(sel_cat, city, search_text)
 
     return render_template(

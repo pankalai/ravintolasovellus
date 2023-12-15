@@ -89,7 +89,7 @@ class RestaurantService:
     def get_restaurants(self, categories=None, city=None, word=None):
         return db.get_restaurants(categories,city,word)
 
-    def get_info_for_search_form(self, request):
+    def get_info_for_restaurant_search_form(self, request):
         selected_cat = request.form.getlist("categories", None)
         selected_cat = [int(c) for c in selected_cat]
         city = request.form.get("city", None)

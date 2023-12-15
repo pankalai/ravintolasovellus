@@ -2,16 +2,19 @@
 {% block title %}Kirjautuminen{% endblock %}
 {% block content %}
 {{ super() }}
-<h2>Rekisteröidy</h2>
-<br>
-{% if notice %}
-<div class="error">{{ notice | safe }}</div>
-{% endif %}
 
-{% if info %}
-{{ info | safe }}
-{% endif %}
-<br>
-{% include "Forms/register_form.html" %}
+<div class="register">
+    <h2>Rekisteröidy</h2>
+    <br>
+    {% if notice %}
+    <div class="error">{{ notice | safe }}</div>
+    {% endif %}
+
+    {% if info %}
+    {{ info | safe }}
+    {% endif %}
+    <br>
+    {% include "Forms/register_form.html" %}
+</div>
 
 {% endblock %}

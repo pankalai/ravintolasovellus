@@ -1,0 +1,321 @@
+body {
+    /* margin: auto; */
+    /* max-width: 60em; */
+    font-family: "Helvetica", "Arial", sans-serif;
+    background-color: rgb(255, 255, 255);    
+}
+.content {
+    width: 100%;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 60em;
+    margin: auto;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    background-color: rgb(255, 255, 255);
+}
+
+div.nav-bar-sections {
+    display: flex;
+    float: left;
+    padding-left: 1em;
+    /* justify-content: center;
+    align-items: center;
+    text-align: center; */
+}
+
+div.nav-bar-user {
+    text-align: right;
+    padding-right: 15px;
+    float: right;
+    display: flex;
+}
+
+div.nav-text {
+    margin-right: 10px;
+}
+
+.center-frame {
+    width: 100%;
+    height: 85vh;
+    background-image: url("index.jpg");  
+    background-size: cover;
+    color: rgb(10, 7, 29);
+}
+
+.center-content {
+    max-width: 60em;
+    height: 100%;
+    margin: auto;
+    position: relative; 
+    padding: 0em 1.5em;
+    overflow: auto;
+}
+
+.frontpage-login {
+    position: absolute;
+    padding: 2.5em 3.5em 2.5em 2.5em;
+    left: 75px;
+    top: 100px;
+    background-color: rgb(255, 255, 255, 0.75);
+    border-radius: .75em;
+    max-width: 25em;
+}
+
+
+#login {
+    float: left;
+    display: grid;
+    
+    grid-template-columns: 5em 10em;
+    grid-row-gap: .3em;
+    margin: 2em 0em;
+}
+#login-button {
+    grid-column-start: 2;
+    margin-top: 2em;
+    width: 10em;
+}
+
+#login label, input {
+    margin: auto 0;
+}
+
+div.register {
+    margin: 5em;
+}
+.frontpage-info {
+    position: absolute;
+    padding: 25px 125px 25px 25px;
+    left: 400px;
+    top: 400px;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.75;
+    border-radius: .75em;
+}
+
+div.search-panel {
+    display: inline-block;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    background-color: #eee8e8;
+    padding: 1em 0em;
+}
+
+div.search-fields-group {
+    float: left;
+    padding-left: 0.5em;
+}
+
+div.search-field {
+    display: inline-block;
+    padding-right: 0.5em;
+    vertical-align: middle;
+}
+
+div.search-buttons-group {
+    float: right;
+    padding-right: 0.5em;
+}
+
+div.search-button {
+    display: inline-block;
+    padding-left: 5px;
+}
+
+div.restaurant {
+    margin: 3em 3em;
+    display: grid;
+    align-items: center; 
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0.5em;
+    justify-items: center;
+}
+
+div.restaurant-text {
+   align-self: start;
+}
+
+div.restaurant-image {
+    align-self: center;
+ }
+
+
+table.restaurants {
+    padding-top: 0.5em;
+    /* margin: 1em 1em 0em 1em; */
+}
+
+
+.btn {
+    display:inline-block;
+    height: 25px;
+    margin-bottom:0;
+    font-weight:575;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align:middle;
+    -ms-touch-action:manipulation;
+    touch-action:manipulation;
+    cursor:pointer;
+    background-image:none;
+    border:1px solid transparent;
+    padding: 0px 10px;
+    font-size:14px;
+    line-height:1.42857143;
+    border-radius:4px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+
+.btn-add {
+    color: #000000;
+    background-color: #dfe6ec;
+    border-color: #c0cad3;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-add:hover {
+    color: #000000;
+    background-color: #d3dce4;
+    border-color: #8f9fad;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-delete {
+    color: #ffffff;
+    background-color: #862e37;
+    border-color: #b87d7d;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-delete:hover {
+    color: #ffffff;
+    background-color: #75222a;
+    border-color: #b87d7d;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-search {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-search:hover {
+    color: #fff;
+    background-color: #286090;
+    border-color: #122b40;
+}
+
+.btn-clear {
+    color: #fff;
+    width: 9em;
+    background-color: #e6911a;
+    border-color: #d58512;
+    padding: 0em 0.2em
+}
+.btn-clear:hover {
+    color: #fff;
+    background-color: #c27914;
+    border-color: #8d570b;
+  }
+
+#dropdownMenu1 {
+    width: 150px;
+    background-color: #ffffff;
+    border-color: #aca69d;
+}
+#dropdownMenu1:hover {
+    
+    background-color: #f1f0f0;
+    border-color: #928d86;
+}
+
+.badge{
+    display:inline-block;
+    padding:.25em .4em;
+    font-size:75%;
+    font-weight:700;
+    line-height:1;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align:baseline;
+    border-radius:.25rem
+}
+
+.badge-category{
+    color:#fff;
+    background-color:#17a2b8
+}
+
+.categories-select-list{
+    width:200px;
+    /* padding-right:15px;
+    padding-left:15px;
+    margin-right:auto;
+    margin-left:auto; */
+    max-height: 150px;
+    overflow: auto
+
+}
+
+.notice-panel {
+    position: relative;
+    flex-wrap: wrap;
+    margin: auto;
+    vertical-align: middle;
+    /* padding-top: 2em;
+    padding-bottom: 2em;
+    background-color: rgb(255, 255, 255); */
+}
+.notice-text {
+    float: left;
+    /* padding-left: 1em; */
+    color: red;
+    margin-left: 0.5em;
+    margin-bottom: 0.75em;
+    margin-top: 0.25em;
+}
+
+.new-restaurant {
+    margin-right: 0.1em;
+    float: right;
+    padding-right: 0.25em;
+    padding-bottom: 0.5em;
+}
+
+.search-buttons-row {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.restaurant_picture {
+    border-radius: 25%;
+    max-width: 450px;
+    max-height: 325px;
+    height: auto;
+    width: auto;
+    padding: 15px
+}
+
+
+
+.error {
+    color: red;
+    margin: 15px 0px 15px 0px;
+}
+
+#map {height: 100%;width: 100vw;}

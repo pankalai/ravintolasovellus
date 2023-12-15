@@ -87,7 +87,7 @@ function drawMap() {
     markers = getSyncScriptParams("markers");
     markers = Array.from(eval(markers));
     markers.forEach((marker) => {
-        var m = L.marker([marker.lat, marker.lon ]).addTo(map)
+        var m = L.marker([marker.lat, marker.lon]).addTo(map)
         m.bindPopup(marker.info)
         m.bindTooltip(marker.name)
     });

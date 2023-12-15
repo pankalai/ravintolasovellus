@@ -1,25 +1,139 @@
 body {
-    margin: auto;
-    max-width: 50em;
+    /* margin: auto; */
+    /* max-width: 60em; */
     font-family: 'Helvetica', 'Arial', sans-serif;
+    background-color: rgb(255, 255, 255);    
+}
+.content {
+    width: 100%;
 }
 
-nav {
-    margin-top: 1em;
-    margin-bottom: 2em;
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 60em;
+    margin: auto;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    background-color: rgb(255, 255, 255);
 }
 
-.error {
-    color: red;
-    margin: 15px 0px 15px 0px;
+div.nav-bar-sections {
+    display: flex;
+    float: left;
+    padding-left: 1em;
+    /* justify-content: center;
+    align-items: center;
+    text-align: center; */
 }
 
-#map {height: 100%;width: 100vw;}
+div.nav-bar-user {
+    text-align: right;
+    padding-right: 15px;
+    float: right;
+    display: flex;
+}
+
+div.nav-text {
+    margin-right: 10px;
+}
+
+.center-frame {
+    width: 100%;
+    height: 85vh;
+    background-image: url('index.jpg');  
+    background-size: cover;
+    color: rgb(10, 7, 29);
+}
+
+.center-content {
+    max-width: 60em;
+    height: 100%;
+    margin: auto;
+    position: relative; 
+    padding: 0em 1.5em;
+    overflow: auto;
+}
+
+.frontpage-login {
+    position: absolute;
+    padding: 25px 100px 25px 25px;
+    left: 75px;
+    top: 100px;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.75;
+    border-radius: .75em;
+}
+
+.frontpage-info {
+    position: absolute;
+    padding: 25px 125px 25px 25px;
+    left: 400px;
+    top: 400px;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.75;
+    border-radius: .75em;
+}
+
+div.search-panel {
+    display: inline-block;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    background-color: #eee8e8;
+    padding: 1em 0em;
+}
+
+div.search-fields-group {
+    float: left;
+    padding-left: 0.5em;
+}
+
+div.search-field {
+    display: inline-block;
+    padding-right: 0.5em;
+    vertical-align: middle;
+}
+
+div.search-buttons-group {
+    float: right;
+    padding-right: 0.5em;
+}
+
+div.search-button {
+    display: inline-block;
+    padding-left: 5px;
+}
+
+div.restaurant {
+    margin: 3em 3em;
+    display: grid;
+    align-items: center; 
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0.5em;
+    justify-items: center;
+}
+
+div.restaurant-text {
+   align-self: start;
+}
+
+div.restaurant-image {
+    align-self: center;
+ }
+
+
+table.restaurants {
+    padding-top: 0.5em;
+    /* margin: 1em 1em 0em 1em; */
+}
+
 
 .btn {
     display:inline-block;
+    height: 25px;
     margin-bottom:0;
-    font-weight:400;
+    font-weight:575;
     text-align:center;
     white-space:nowrap;
     vertical-align:middle;
@@ -28,7 +142,7 @@ nav {
     cursor:pointer;
     background-image:none;
     border:1px solid transparent;
-    padding:6px 12px;
+    padding: 0px 10px;
     font-size:14px;
     line-height:1.42857143;
     border-radius:4px;
@@ -39,9 +153,65 @@ nav {
 }
 
 .btn-add {
-    /* color:#fff; */
-    /* background-color:#337ab7; */
-    border-color:#a4aaaf !important;
+    color: #000000;
+    background-color: #d3dce4;
+    border-color: #c0cad3;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-delete {
+    color: #ffffff;
+    background-color: #862e37;
+    border-color: #b87d7d;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-delete:hover {
+    color: #ffffff;
+    background-color: #75222a;
+    border-color: #b87d7d;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-search {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-search:hover {
+    color: #fff;
+    background-color: #286090;
+    border-color: #122b40;
+}
+
+.btn-clear {
+    color: #fff;
+    width: 9em;
+    background-color: #e6911a;
+    border-color: #d58512;
+    padding: 0em 0.2em
+}
+.btn-clear:hover {
+    color: #fff;
+    background-color: #c27914;
+    border-color: #8d570b;
+  }
+
+#dropdownMenu1 {
+    width: 150px;
+    background-color: #ffffff;
+    border-color: #aca69d;
+}
+#dropdownMenu1:hover {
+    
+    background-color: #f1f0f0;
+    border-color: #928d86;
 }
 
 .badge{
@@ -72,9 +242,28 @@ nav {
 
 }
 
+.notice-panel {
+    position: relative;
+    flex-wrap: wrap;
+    margin: auto;
+    vertical-align: middle;
+    /* padding-top: 2em;
+    padding-bottom: 2em;
+    background-color: rgb(255, 255, 255); */
+}
+.notice-text {
+    float: left;
+    /* padding-left: 1em; */
+    color: red;
+    margin-left: 0.5em;
+    margin-bottom: 0.75em;
+    margin-top: 0.25em;
+}
+
 .new-restaurant {
+    margin-right: 0.1em;
     float: right;
-    padding-right: 0.5em;
+    padding-right: 0.25em;
     padding-bottom: 0.5em;
 }
 
@@ -82,3 +271,21 @@ nav {
     margin-top: 20px;
     display: inline-block;
 }
+
+.restaurant_picture {
+    border-radius: 25%;
+    max-width: 450px;
+    max-height: 325px;
+    height: auto;
+    width: auto;
+    padding: 15px
+}
+
+
+
+.error {
+    color: red;
+    margin: 15px 0px 15px 0px;
+}
+
+#map {height: 100%;width: 100vw;}

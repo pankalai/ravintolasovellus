@@ -1016,17 +1016,7 @@ td,th{
     -moz-box-sizing:border-box;
     box-sizing:border-box
 }
-html{
-    font-size:10px;
-    -webkit-tap-highlight-color:rgba(0,0,0,0)
-}
-body{
-    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size:14px;
-    line-height:1.42857143;
-    color:#333;
-    background-color:#fff
-}
+
 button,input,select,textarea{
     font-family:inherit;
     font-size:inherit;
@@ -2221,7 +2211,7 @@ legend{
 label{
     display:inline-block;
     max-width:100%;
-    margin-bottom:5px;
+    margin-bottom:2px;
     font-weight:700
 }
 input[type=search]{
@@ -2634,7 +2624,7 @@ select[multiple].input-lg,textarea.input-lg{
     outline-offset:-2px
 }
 .btn.focus,.btn:focus,.btn:hover{
-    color:#333;
+    /* color:#333; */
     text-decoration:none
 }
 .btn.active,.btn:active{
@@ -3335,6 +3325,7 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
     z-index:2;
     margin-left:-1px
 }
+/* 
 .nav{
     padding-left:0;
     margin-bottom:0;
@@ -3978,7 +3969,7 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 }
 .navbar-inverse .btn-link[disabled]:focus,.navbar-inverse .btn-link[disabled]:hover,fieldset[disabled] .navbar-inverse .btn-link:focus,fieldset[disabled] .navbar-inverse .btn-link:hover{
     color:#444
-}
+} */
 .breadcrumb{
     padding:8px 15px;
     margin-bottom:20px;
@@ -4629,10 +4620,10 @@ a.list-group-item-danger.active,a.list-group-item-danger.active:focus,a.list-gro
     padding:15px
 }
 .panel-heading{
-    padding:10px 15px;
     border-bottom:1px solid transparent;
     border-top-left-radius:3px;
-    border-top-right-radius:3px
+    border-top-right-radius:3px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
 }
 .panel-heading>.dropdown .dropdown-toggle{
     color:inherit
@@ -4741,7 +4732,8 @@ a.list-group-item-danger.active,a.list-group-item-danger.active:focus,a.list-gro
     border:0
 }
 .panel-group{
-    margin-bottom:20px
+    margin-bottom:20px;
+    max-width:40em;
 }
 .panel-group .panel{
     margin-bottom:0;

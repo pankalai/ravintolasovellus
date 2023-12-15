@@ -16,7 +16,7 @@
 	line-height: 1.3;
 	font-size: 13px;
     /* Muutettu */
-	font-size: 1.75em; 
+	font-size: 1.25em; 
 	min-height: 1px;
 	}
 .leaflet-popup-content p {
@@ -116,7 +116,7 @@
 	user-select: none;
 	pointer-events: none;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    font-size: 1.75em;
+    font-size: 1.25em;
 	}
 .leaflet-tooltip.leaflet-interactive {
 	cursor: pointer;

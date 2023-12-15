@@ -19,7 +19,7 @@ def add_category():
     if session["csrf_token"] != request.form["csrf_token"] or not user_s.is_admin():
         abort(403)
     name = request.form.get("name")
-    info = cat_s.add_category(name)       
+    info = cat_s.add_category(name)
     return redirect(url_for('.show_categories', notice=info))
 
 

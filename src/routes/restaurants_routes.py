@@ -50,10 +50,10 @@ def add_restaurant():
 @app.route("/restaurants/<int:restaurant_id>")
 def show_restaurant(restaurant_id):
     res = res_s.get_restaurant(restaurant_id)
-    if not res:
-        return redirect("/restaurants/list")
-    cat = cat_s.get_restaurant_category(restaurant_id)
-    return render_template("restaurant.html", restaurant=res, categories=cat)
+    res = res._asdict()
+    cat = cat_s.get_restaurant_categories(restaurant_id)
+    pic = res_s.get_image(restaurant_id)
+    return render_template("restaurant.html", restaurant=res, categories=cat, image=pic)
 
 
 @app.route("/restaurants/<int:restaurant_id>/edit")
@@ -102,15 +102,19 @@ def restaurant_send():
     opening_hours = request.form.get("opening_hours").lstrip().rstrip()
     cats = request.form.getlist("categories")
     street = request.form.get("street").lstrip().rstrip()
-    zip = request.form.get("zip").lstrip().rstrip()
+    zip_code = request.form.get("zip").lstrip().rstrip()
     city = request.form.get("city").lstrip().rstrip()
+    file = request.files.get("file")
+
+    if file:
+        res_s.add_image(restaurant_id, file)
 
     if restaurant_id:
         info = res_s.update_restaurant(
-            restaurant_id, name, description, street, zip, city, opening_hours, cats
+            restaurant_id, name, description, street, zip_code, city, opening_hours, cats
         )
     else:
-        info = res_s.add_restaurant(name, description, street, zip, city, opening_hours, cats)
+        info = res_s.add_restaurant(name, description, street, zip_code, city, opening_hours, cats)
 
     return redirect(url_for('.show_restaurants', list_type="list", notice=info))
 
@@ -129,5 +133,5 @@ def show_restaurant_ratings(restaurant_id):
 def restaurant_delete(restaurant_id):
     if session["csrf_token"] != request.form["csrf_token"] or not user_s.is_admin():
         abort(403)
-    res_s.hide_restaurant(restaurant_id)
-    return redirect("/restaurants/list")
+    info = res_s.hide_restaurant(restaurant_id)
+    return redirect(url_for('.show_restaurants', list_type="list", notice=info))

@@ -18,7 +18,7 @@ class Database:
             return result
         except Exception as error:
             print("An error occurred: ", error)
-            database.session.rollback()
+            self._db.session.rollback()
             return None
 
     def update(self, sql, data=None, commit=True, return_value=False):

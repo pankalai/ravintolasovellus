@@ -5,8 +5,8 @@ class CategoryService:
     def add_category(self, name):
         success = db.add_category(name)
         if not success:
-            return "Kategorian lisääminen epäonnistui"
-        return None
+            return False, "Kategorian lisääminen epäonnistui"
+        return True, "Kategoria lisättiin"
 
     def delete_category(self, category_id):
         if not db.delete_category(category_id):

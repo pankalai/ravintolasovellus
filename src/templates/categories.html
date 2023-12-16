@@ -3,8 +3,6 @@
 {% block content %}
 {{ super() }}
 
-<link rel="stylesheet" href="/static/bootstrap_accordion.css"/>
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.js"></script>
 
@@ -17,11 +15,16 @@
 <br>
 {% include "Forms/new_category_form.html" %}
 
-<div class="error-text">
-    {% if notice %}
-        {{ notice }}
-    {% endif %}
-</div>
+{% if error %}
+    <div class="error-text ">
+            {{ error }}
+    </div>
+{% endif %}
+{% if success %}
+    <div class="success-text">
+            {{ success }}
+    </div>
+{% endif %}
 <br>
 
 <hr>
@@ -43,7 +46,7 @@
 
             <div style="display: flex;float: right;">
 
-                <form action="/categories/{{value["id"]}}/delete" method="POST" onsubmit="return confirm("Haluatko varmasti poistaa?");"> 
+                <form action="/categories/{{value['id']}}/delete" method="POST" onsubmit="return confirm('Haluatko varmasti poistaa?');"> 
                     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" style="height: 22.5px" class="btn btn-delete" value="Poista">
                 </form>
@@ -57,6 +60,11 @@
         <div id="r{{loop.index}}" class="panel-collapse collapse">
             <div class="panel-body">
                 <table class="table" style="width: 70%;">
+                    <thead>
+                        <th>Viimeksi lisätyt</th>
+                        <th></th>
+                    </thead>
+           
                     <tbody>
                     {% for r in value["restaurants"] %}
                         <tr>

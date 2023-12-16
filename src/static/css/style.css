@@ -1,11 +1,11 @@
 body {
-    /* margin: auto; */
-    /* max-width: 60em; */
     font-family: "Helvetica", "Arial", sans-serif;
     background-color: rgb(255, 255, 255);    
 }
+
 .content {
     width: 100%;
+    max-height: 100%;
 }
 
 .nav {
@@ -17,11 +17,12 @@ body {
     padding-bottom: 2em;
     background-color: rgb(255, 255, 255);
 }
+  
 
 div.nav-bar-sections {
     display: flex;
     float: left;
-    padding-left: 1em;
+    padding-left: 2em;
     /* justify-content: center;
     align-items: center;
     text-align: center; */
@@ -29,7 +30,7 @@ div.nav-bar-sections {
 
 div.nav-bar-user {
     text-align: right;
-    padding-right: 15px;
+    padding-right: 2em;
     float: right;
     display: flex;
 }
@@ -40,7 +41,7 @@ div.nav-text {
 
 .center-frame {
     width: 100%;
-    height: 85vh;
+    height: 84vh;
     background-image: url("/static/index.jpg");  
     background-size: cover;
     color: rgb(10, 7, 29);
@@ -58,8 +59,8 @@ div.nav-text {
 .frontpage-login {
     position: absolute;
     padding: 2.5em 3.5em 2.5em 2.5em;
-    left: 75px;
-    top: 100px;
+    left: 15%;
+    top: 20%;
     background-color: rgb(255, 255, 255, 0.75);
     border-radius: .75em;
     max-width: 25em;
@@ -78,6 +79,7 @@ div.nav-text {
     grid-column-start: 2;
     margin-top: 2em;
     width: 10em;
+    margin-left: 0.5em;
 }
 
 #login label, input {
@@ -175,26 +177,46 @@ table.restaurants {
     user-select:none
 }
 
-.btn-add {
+.btn-confirm {
+    color: #292b29;
+    background-color: #d5dad5;
+    border-color: #909b91;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-confirm:hover {
     color: #000000;
-    background-color: #dfe6ec;
-    border-color: #c0cad3;
+    background-color: #c2ccc2;
+    border-color: #91a092;
+    width: 9em;
+    padding: 0px;
+}
+
+.btn-add {
+    color: #343634;
+    background-color: #cfdbcf;
+    border-color: #a6afa7;
+    /* background-color: #bfdbc1;
+    border-color: #8fad94; */
     width: 9em;
     padding: 0px;
 }
 
 .btn-add:hover {
     color: #000000;
-    background-color: #d3dce4;
-    border-color: #8f9fad;
+    background-color: #bccfbc;
+    border-color: #879689;
+    /* background-color: rgb(172, 207, 177);
+    border-color: #85a78c; */
     width: 9em;
     padding: 0px;
 }
 
 .btn-delete {
-    color: #ffffff;
-    background-color: #862e37;
-    border-color: #b87d7d;
+    color: #f3eded;
+    background-color: #9e4951;
+    border-color: #753232;
     width: 9em;
     padding: 0px;
 }
@@ -202,13 +224,13 @@ table.restaurants {
 .btn-delete:hover {
     color: #ffffff;
     background-color: #75222a;
-    border-color: #b87d7d;
+    border-color: #744040;
     width: 9em;
     padding: 0px;
 }
 
 .btn-search {
-    color: #fff;
+    color: #f3eded;
     background-color: #337ab7;
     border-color: #2e6da4;
     width: 9em;
@@ -298,7 +320,7 @@ table.restaurants {
     color: rgb(31, 143, 31);
     /* margin-left: 0.5em; */
     margin-bottom: 0.75em;
-    margin-top: 0.25em;
+    margin-top: 0.5em;
 }
 
 .new-restaurant {
@@ -322,7 +344,15 @@ table.restaurants {
     padding: 15px
 }
 
+.col-9 {
+    flex: 0 0 auto;
+    width: 75%;
+}
 
+.col-3 {
+    flex: 0 0 auto;
+    width: 25%;
+}
 
 .error {
     color: red;

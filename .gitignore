@@ -3,3 +3,4 @@ __pycache__/
 venv/
 schema_dev.sql
 .pylintrc
+geckodriver.log

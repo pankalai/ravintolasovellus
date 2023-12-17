@@ -19,16 +19,10 @@ Sovellus ei ole testattavissa Fly.iossa
 ## Virtuaaliympäristön luominen
 python3 -m venv venv
 
-## Riippuvuudet
-requirements.txt  
-
-Asennus:<br>
+## Riippuvuuksien asennus
 pip install -r requirements.txt
 
 ## Tietokannan rakenne
-schema.sql  
-
-Luonti:<br>
 psql < schema.sql
 
 Tietokannan rakenteen luonnin yhteydessä luodaan admin-käyttäjä:

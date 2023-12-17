@@ -14,13 +14,14 @@
     {{ res.location.city }}<br>
     <br>
     
-    {% if session.get("admin", False) %}
-
-        {% if error %}
+    {% if error %}
         <div class="error-text ">
                 {{ error }}
         </div>
-        {% endif %}
+    {% endif %}
+
+    {% if session.get("admin", False) %}
+
         {% if success %}
         <div class="success-text">
                 {{ success }}

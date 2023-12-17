@@ -43,7 +43,8 @@ def send_rating():
     stars = request.form.get("stars")
     comment = request.form.get("comment")
     info = rat_s.add_rating(restaurant_id, stars, comment)
-    return redirect(url_for(".show_ratings", notice=info))
+    print(info)
+    return redirect(url_for(".show_restaurant_ratings", restaurant_id=restaurant_id, error=info))
 
 
 

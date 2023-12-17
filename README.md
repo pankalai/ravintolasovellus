@@ -35,6 +35,6 @@ DATABASE_URL
 SECRET_KEY
 
 ## Käynnistys
-Siirtyminen src-kansioon<br>
-Komento: flask run
+src-kansiossa komento<br>
+flask run
 

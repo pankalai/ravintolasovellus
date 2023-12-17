@@ -17,15 +17,19 @@ Toteutetut toiminnallisuudet:
 Sovellus ei ole testattavissa Fly.iossa 
 
 ## Virtuaaliympäristön luominen
-Komento: python3 -m venv venv
+python3 -m venv venv
 
 ## Riippuvuudet
 requirements.txt  
-Komento: pip install -r requirements.txt
+
+Asennus:<br>
+pip install -r requirements.txt
 
 ## Tietokannan rakenne
 schema.sql  
-Komento: psql < schema.sql
+
+Luonti:<br>
+psql < schema.sql
 
 Tietokannan rakenteen luonnin yhteydessä luodaan admin-käyttäjä:
 

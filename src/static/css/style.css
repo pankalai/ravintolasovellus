@@ -24,9 +24,6 @@ div.nav-bar-sections {
     display: flex;
     float: left;
     padding-left: 2em;
-    /* justify-content: center;
-    align-items: center;
-    text-align: center; */
 }
 
 div.nav-bar-user {
@@ -141,7 +138,6 @@ div.restaurant {
 
 div.restaurant-text {
    align-self: start;
-   /* padding-left: 1.5em; */
 }
 
 div.restaurant-image {
@@ -151,7 +147,6 @@ div.restaurant-image {
 
 table.restaurants {
     padding-top: 0.5em;
-    /* margin: 1em 1em 0em 1em; */
 }
 
 
@@ -198,8 +193,6 @@ table.restaurants {
     color: rgb(52, 54, 52);
     background-color: #cfdbcf;
     border-color: #a6afa7;
-    /* background-color: #bfdbc1;
-    border-color: #8fad94; */
     width: 9em;
     padding: 0px;
 }
@@ -208,8 +201,6 @@ table.restaurants {
     color: #000000;
     background-color: #bccfbc;
     border-color: #879689;
-    /* background-color: rgb(172, 207, 177);
-    border-color: #85a78c; */
     width: 9em;
     padding: 0px;
 }
@@ -287,13 +278,8 @@ table.restaurants {
 
 .categories-select-list{
     width:200px;
-    /* padding-right:15px;
-    padding-left:15px;
-    margin-right:auto;
-    margin-left:auto; */
     max-height: 150px;
     overflow: auto
-
 }
 
 .notice-panel {
@@ -302,24 +288,17 @@ table.restaurants {
     margin: auto;
     vertical-align: middle;
     padding-left: 0.5em
-    /* padding-top: 2em;
-    padding-bottom: 2em;
-    background-color: rgb(255, 255, 255); */
 }
 .error-text {
     float: left;
-    /* padding-left: 1em; */
     color: red;
-    /* margin-left: 0.5em; */
     margin-bottom: 0.75em;
     margin-top: 0.25em;
 }
 
 .success-text {
     float: left;
-    /* padding-left: 1em; */
     color: rgb(31, 143, 31);
-    /* margin-left: 0.5em; */
     margin-bottom: 0.75em;
     margin-top: 0.5em;
 }

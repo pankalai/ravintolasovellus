@@ -38,9 +38,11 @@
             </p>
             <p>Arvosana: {{ r.stars }}<br></p>
 
-            {% if r.comment != "" %}
-                <p>{{ r.comment }}<br></p>
-            {% endif %}
+            <div style="overflow-wrap: break-word;">
+                {% if r.comment != "" %}
+                    <p>{{ r.comment }}<br></p>
+                {% endif %}
+            </div>
             {% if session.get("admin", False) %}
             <br>
             <form action="/ratings/{{ r.id }}/delete" method="POST" onsubmit="return confirm("Haluatko varmasti poistaa?");"> 

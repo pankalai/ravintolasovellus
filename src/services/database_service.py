@@ -130,7 +130,7 @@ class DatabaseService:
 
 
     def get_ratings(self, category=None, city=None, word=None):
-        sql = """SELECT res.*, t.average, coalesce(t.count,0) as count
+        sql = """SELECT res.*, coalesce(t.average,0) as average, coalesce(t.count,0) as count
                  FROM restaurants res
                  LEFT JOIN (
                     SELECT res.id, avg(ra.stars) as average, count(ra.stars) as count
@@ -142,7 +142,7 @@ class DatabaseService:
 
         sql += """ GROUP BY res.id ) as t on t.id=res.id
             WHERE res.visible is True
-            ORDER BY t.average desc, t.count desc"""
+            ORDER BY average desc, count desc, res.name"""
 
         result = db.select(sql, data)
         return result.fetchall()
@@ -236,7 +236,7 @@ class DatabaseService:
                 ROW_NUMBER () OVER (PARTITION BY cat.id ORDER BY res_cat.time DESC) as rnk
                 FROM categories as cat
                 LEFT JOIN restaurants_categories as res_cat ON res_cat.category_id = cat.id
-                LEFT JOIN restaurants as res ON res.id = res_cat.restaurant_id
+                LEFT JOIN restaurants as res ON res.id = res_cat.restaurant_id and res.visible is True
                 GROUP BY cat.id, cat.name, res.name, res.location->>'city', res_cat.time
                 ) AS Q
                 WHERE rnk <= :number_of_restaurants

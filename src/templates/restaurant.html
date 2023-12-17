@@ -14,8 +14,9 @@
 
         <p><h3>{{ restaurant.name }}</h3></p>
         <br>
+        <div style="overflow-wrap: break-word;">
         <p><i>{{ restaurant.description }}</i></p>
-
+        </div>
         <p style="padding: 1em 0em;">{{ restaurant.opening_hours.replace("\n","<br>") | safe }}</p>
         <p>
             {{ restaurant.get("location", {}).get("street","") }}<br>

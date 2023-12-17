@@ -10,7 +10,7 @@ def index():
     last_visit = None
     if user_id:
         last_visit = user_s.get_last_visit(user_id)
-    return render_template("index.html", last_visit = last_visit)
+    return render_template("index.html", last_visit=last_visit)
 
 
 @app.route("/login", methods=["GET", "POST"])

@@ -1,6 +1,6 @@
 
 <form action="/categories/add" method="POST">
-    <input type="text" name="name" minlength="2" style="vertical-align:middle;" required>
+    <input type="text" name="name" minlength="2" maxlength="30" style="vertical-align:middle;" required>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     &nbsp;
     <input type="submit" id="submit" value="Lisää" class="btn btn-add" style="vertical-align: middle;">

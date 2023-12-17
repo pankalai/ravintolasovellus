@@ -1,18 +1,17 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
+    username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     admin BOOLEAN NOT NULL,
-    created TIMESTAMP NOT NULL,
-    modified TIMESTAMP
+    created TIMESTAMP NOT NULL
 );
 
 CREATE TABLE restaurants (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(255),
     location JSON,
-    opening_hours TEXT,
+    opening_hours VARCHAR(255),
     visible BOOLEAN NOT NULL,
     created TIMESTAMP NOT NULL,
     modified TIMESTAMP
@@ -33,7 +32,7 @@ CREATE TABLE ratings (
 
 CREATE TABLE categories ( 
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(30) UNIQUE NOT NULL,
     created TIMESTAMP NOT NULL,
     modified TIMESTAMP
 );

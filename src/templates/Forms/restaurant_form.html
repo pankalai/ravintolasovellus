@@ -2,12 +2,12 @@
 <form action="/restaurant/send" method="POST" enctype="multipart/form-data">
     <p>
         <h4>Nimi</h4>
-        <input type="text" name="name" value = "{{ restaurant.get('name','')}}" required><br>
+        <input type="text" maxlength="50" name="name" value = "{{ restaurant.get('name','')}}"  required><br>
     </p>
     <br>
     <p>
         <h4>Kuvaus</h4>
-        <textarea name="description" rows="2" cols="50" maxlength="200">{{ restaurant.get('description','') }}</textarea><br>
+        <textarea name="description" rows="2" cols="50" maxlength="255">{{ restaurant.get('description','') }}</textarea><br>
     </p>
     <br>
     <p>
@@ -25,7 +25,7 @@
     <br>
     <p>
         <h4>Aukioloajat</h4>
-        <textarea name="opening_hours" rows="6" cols="25" required>{{ restaurant.get('opening_hours','') }}</textarea>
+        <textarea name="opening_hours" rows="6" cols="25" maxlength="255" required>{{ restaurant.get('opening_hours','') }}</textarea>
     </p>
     <br>
     <p>

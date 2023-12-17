@@ -130,7 +130,7 @@ class RestaurantService:
         data = file.read()
         name = file.filename
 
-        if len(data) > 100*1024:
+        if len(data) > 1000*1024:
             return "Tiedosto on liian iso"
 
         if not (name.endswith(".jpg") or name.endswith(".png") or name.endswith(".gif")):

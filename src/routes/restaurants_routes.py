@@ -124,6 +124,8 @@ def restaurant_send():
 
 @app.route("/restaurants/<int:restaurant_id>/ratings")
 def show_restaurant_ratings(restaurant_id):
+    if not user_s.username():
+        abort(403)
     error = request.args.get("error")
     success = request.args.get("success")
     res = res_s.get_restaurant(restaurant_id)

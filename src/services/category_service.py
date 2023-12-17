@@ -4,7 +4,7 @@ from services.database_service import database_service as db
 class CategoryService:
 
     def add_category(self, name):
-        success = db.add_category(name)
+        success = db.add_category(name.capitalize())
         if not success:
             return False, "Kategorian lisääminen epäonnistui"
         return True, "Kategoria lisättiin"

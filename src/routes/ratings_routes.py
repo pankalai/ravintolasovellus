@@ -37,7 +37,7 @@ def search_ratings():
 
 @app.route("/ratings/send", methods=["POST"])
 def send_rating():
-    if session["csrf_token"] != request.form["csrf_token"]:
+    if session["csrf_token"] != request.form["csrf_token"] or not user_s.username():
         abort(403)
     restaurant_id = request.form.get("id")
     stars = request.form.get("stars")
@@ -49,6 +49,8 @@ def send_rating():
 
 @app.route("/ratings/new/<int:restaurant_id>")
 def new_rating(restaurant_id):
+    if not user_s.username():
+        abort(403)
     res = res_s.get_restaurant(restaurant_id)
     return render_template("ratings_new.html", id=id, restaurant=res)
 

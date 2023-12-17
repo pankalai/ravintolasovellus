@@ -22,7 +22,7 @@ CREATE TABLE ratings (
     user_id INT NOT NULL,
     restaurant_id INT NOT NULL,
     stars INT NOT NULL,
-    comment TEXT,
+    comment VARCHAR(1000),
     visible BOOLEAN NOT NULL,
     created TIMESTAMP NOT NULL,
     modified TIMESTAMP,

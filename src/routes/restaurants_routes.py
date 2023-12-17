@@ -13,9 +13,7 @@ def restaurant():
 
 
 @app.route("/restaurants/<string:list_type>")
-def show_restaurants(list_type):
-    error = request.args.get("error")
-    success = request.args.get("success")
+def show_restaurants(list_type, error=None, success=None):
     all_restaurants = res_s.get_restaurants()
     if list_type == "list":
         categories = cat_s.get_categories()
@@ -117,17 +115,15 @@ def restaurant_send():
             name, description, street, zip_code, city, opening_hours, cats, file
         )
 
-    if success:
-        return redirect(url_for(".show_restaurants", list_type="list", success=info))
-    return redirect(url_for(".show_restaurants", list_type="list", error=info))
+    if not success:
+        return show_restaurants("list", info)
+    return show_restaurants("list", None, info)
 
 
 @app.route("/restaurants/<int:restaurant_id>/ratings")
-def show_restaurant_ratings(restaurant_id):
+def show_restaurant_ratings(restaurant_id, error=None, success=None):
     if not user_s.username():
         abort(403)
-    error = request.args.get("error")
-    success = request.args.get("success")
     res = res_s.get_restaurant(restaurant_id)
     rat = rat_s.get_restaurants_ratings(restaurant_id)
     return render_template(
@@ -142,5 +138,5 @@ def restaurant_delete(restaurant_id):
         abort(403)
     success, info = res_s.hide_restaurant(restaurant_id)
     if not success:
-        return redirect(url_for(".show_restaurants", list_type="list", error=info))
-    return redirect(url_for(".show_restaurants", list_type="list", success=info))
+        return show_restaurants("list", info)
+    return show_restaurants("list", None, info)

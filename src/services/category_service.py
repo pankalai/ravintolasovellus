@@ -11,8 +11,8 @@ class CategoryService:
 
     def delete_category(self, category_id):
         if not db.delete_category(category_id):
-            return "Kategorian poistaminen epäonnistui"
-        return None
+            return False, "Kategorian poistaminen epäonnistui"
+        return True, "Kategoria poistettiin"
 
     def get_restaurant_categories(self, restaurant_id):
         return db.get_restaurant_categories(restaurant_id)

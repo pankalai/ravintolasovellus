@@ -1,27 +1,25 @@
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request
 from app import app
 
 from services.user_service import user_service as user_s
 
 
 @app.route("/")
-def index():
+def index(error=None):
     user_id = user_s.get_user_id()
     last_visit = None
     if user_id:
         last_visit = user_s.get_last_visit(user_id)
-    return render_template("index.html", last_visit=last_visit)
+    return render_template("index.html", last_visit=last_visit, error=error)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    info = None
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         info = user_s.login(username, password)
-
-    return redirect(url_for(".index", notice=info))
+    return index(info)
 
 
 @app.route("/logout")

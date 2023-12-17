@@ -8,6 +8,11 @@
         {% if session.get("username", None) is none %}
             <strong>Tervetuloa ravintolasovellukseen!</strong>
             {% include "Forms/login_form.html" %}
+            {% if error %}
+                <div style="color: red; margin-bottom: 1em;">
+                    {{ error }}
+                </div>
+            {% endif %}
             <a href="/register">Rekisteröidy</a>
         {% else %}
             Tervetuloa {{ session.get("username") }}!

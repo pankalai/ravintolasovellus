@@ -2,6 +2,7 @@ from services.database_service import database_service as db
 
 
 class CategoryService:
+
     def add_category(self, name):
         success = db.add_category(name)
         if not success:
@@ -20,16 +21,15 @@ class CategoryService:
         return db.get_all_columns_from_table("categories", "name")
 
     def get_categories_and_restaurants(self):
-        categories = db.get_categories_and_restaurants()
+        categories = db.get_categories_and_restaurants(10)
         cats = {}
         for category in categories:
             if category.name not in cats:
                 cats[category.name] = {}
                 cats[category.name]["id"] = category.id
-                cats[category.name]["count"] = 0
+                cats[category.name]["count"] = category.count
                 cats[category.name]["restaurants"] = []
             if category.restaurant:
-                cats[category.name]["count"] += 1
                 cats[category.name]["restaurants"].append(
                     (category.restaurant, category.city)
                 )

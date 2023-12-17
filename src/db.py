@@ -1,7 +1,6 @@
 from os import getenv
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
-from sqlalchemy import exc
 from app import app
 
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
@@ -30,7 +29,7 @@ class Database:
             print("An error occurred: ", error)
             self._db.session.rollback()
             return False
-        
+
         if return_value:
             return result
         return True

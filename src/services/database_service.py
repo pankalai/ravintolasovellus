@@ -227,19 +227,20 @@ class DatabaseService:
             )
         return db.commit()
 
-    def get_categories_and_restaurants(self):
+    def get_categories_and_restaurants(self, number_of_restaurants):
         sql = """SELECT * FROM (
                 SELECT cat.id, cat.name, res.name as restaurant,
-                res.location->>'city' as city, count(res_cat.restaurant_id) as count,
+                res.location->>'city' as city,
+                count(*) over (partition by cat.id) as count,
                 ROW_NUMBER () OVER (PARTITION BY cat.id ORDER BY res_cat.time DESC) as rnk
                 FROM categories as cat
                 LEFT JOIN restaurants_categories as res_cat ON res_cat.category_id = cat.id
                 LEFT JOIN restaurants as res ON res.id = res_cat.restaurant_id
                 GROUP BY cat.id, cat.name, res.name, res.location->>'city', res_cat.time
                 ) AS Q
-                WHERE rnk <= 10
+                WHERE rnk <= :number_of_restaurants
                 ORDER BY name"""
-        result = db.select(sql)
+        result = db.select(sql,{"number_of_restaurants":number_of_restaurants})
         return result.fetchall()
 
     def delete_image(self, restaurant_id):

@@ -7,6 +7,7 @@ from services.map_service import map_service as map_s
 
 
 class RestaurantService:
+
     def add_restaurant(self, name, description, street, zip_code, city, opening_hours, cats, image):
         coordinates = self.get_coordinates(street, zip, city)
         longitude = None if not coordinates else coordinates[0]
@@ -73,7 +74,7 @@ class RestaurantService:
             result = self.add_image(restaurant_id, image)
             if result:
                 return False, result
-                
+
         if not (longitude and latitude):
             return False, self.missing_coodinates_info(street, zip_code, city)
 

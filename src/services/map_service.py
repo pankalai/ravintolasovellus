@@ -61,13 +61,15 @@ class MapService:
         return self._latitude, self._longitude
 
     def split_address_to_street_and_housenumber(self, address):
-        try:
-            index = re.search(r"\d", address).start()
-            street = address[:index].rstrip()
-            housenumber = address[index:].split(" ")[0]
-            return street, housenumber
-        except:
+        search = re.search(r"\d", address)
+        if not search:
+            print("Missing housenumber")
             return None, None
+
+        index = search.start()
+        street = address[:index].rstrip()
+        housenumber = address[index:].split(" ")[0]
+        return street, housenumber
 
 
 map_service = MapService(API_KEY)

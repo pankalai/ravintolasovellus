@@ -62,4 +62,3 @@ def hide_rating(rating_id):
     if success:
         return redirect(url_for(".show_restaurant_ratings", restaurant_id=re_id, success=info))
     return redirect(url_for(".show_restaurant_ratings", restaurant_id=re_id, error=info))
-    #return redirect("/restaurants/" + re_id + "/ratings")

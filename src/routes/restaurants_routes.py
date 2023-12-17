@@ -113,7 +113,9 @@ def restaurant_send():
             restaurant_id, name, description, street, zip_code, city, opening_hours, cats, file
         )
     else:
-        success, info = res_s.add_restaurant(name, description, street, zip_code, city, opening_hours, cats, file)
+        success, info = res_s.add_restaurant(
+            name, description, street, zip_code, city, opening_hours, cats, file
+        )
 
     if success:
         return redirect(url_for(".show_restaurants", list_type="list", success=info))
@@ -126,7 +128,9 @@ def show_restaurant_ratings(restaurant_id):
     success = request.args.get("success")
     res = res_s.get_restaurant(restaurant_id)
     rat = rat_s.get_restaurants_ratings(restaurant_id)
-    return render_template("restaurant_ratings.html", ratings=rat, res=res, error=error, success=success)
+    return render_template(
+        "restaurant_ratings.html", ratings=rat, res=res, error=error, success=success
+    )
 
 
 

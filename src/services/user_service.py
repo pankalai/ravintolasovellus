@@ -1,5 +1,4 @@
 from secrets import token_hex
-from datetime import datetime
 import re
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -8,8 +7,6 @@ from services.database_service import database_service as db
 
 
 class UserService:
-    def __init__(self):
-        pass
 
     def register(self, username, password1, password2):
         if not self.username_valid(username):
@@ -56,7 +53,7 @@ class UserService:
         return 3 <= len(username) <= 30
 
     def password_valid(self, password):
-        reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$"
+        reg = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$"
 
         pattern = re.compile(reg)
         valid = re.search(pattern, password)
@@ -84,7 +81,7 @@ class UserService:
         time = db.get_last_visit(user_id)
         if not time:
             return "-"
-        return time.time.strftime("%d.%m.%Y %H:%M")    
+        return time.time.strftime("%d.%m.%Y %H:%M")
 
 
 user_service = UserService()

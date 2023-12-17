@@ -5,6 +5,7 @@ from services.user_service import user_service as user_s
 
 
 class RatingService:
+
     def get_ratings(self, category=None, city=None, word=None):
         return db.get_ratings(category, city, word)
 

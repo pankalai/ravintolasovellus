@@ -1,6 +1,7 @@
 body {
     font-family: "Helvetica", "Arial", sans-serif;
     background-color: rgb(255, 255, 255);    
+    overflow: hidden;
 }
 
 .content {
@@ -41,7 +42,7 @@ div.nav-text {
 
 .center-frame {
     width: 100%;
-    height: 84vh;
+    height: 85vh;
     background-image: url("/static/index.jpg");  
     background-size: cover;
     color: rgb(10, 7, 29);
@@ -87,7 +88,7 @@ div.nav-text {
 }
 
 div.content-subpage {
-    margin: 3em 5em 5em 5em;
+    margin: 3em 5em 3em 5em;
 }
 .frontpage-info {
     position: absolute;
@@ -178,7 +179,7 @@ table.restaurants {
 }
 
 .btn-confirm {
-    color: #292b29;
+    color: #2e302e;
     background-color: #d5dad5;
     border-color: #909b91;
     width: 9em;
@@ -194,7 +195,7 @@ table.restaurants {
 }
 
 .btn-add {
-    color: #343634;
+    color: rgb(52, 54, 52);
     background-color: #cfdbcf;
     border-color: #a6afa7;
     /* background-color: #bfdbc1;
@@ -214,7 +215,7 @@ table.restaurants {
 }
 
 .btn-delete {
-    color: #f3eded;
+    color: #faf6f6;
     background-color: #9e4951;
     border-color: #753232;
     width: 9em;
@@ -230,7 +231,7 @@ table.restaurants {
 }
 
 .btn-search {
-    color: #f3eded;
+    color: #faf6f6;
     background-color: #337ab7;
     border-color: #2e6da4;
     width: 9em;
@@ -359,4 +360,6 @@ table.restaurants {
     margin: 15px 0px 15px 0px;
 }
 
-#map {height: 100%;width: 100vw;}
+#map {
+    margin-bottom: 2em;
+}

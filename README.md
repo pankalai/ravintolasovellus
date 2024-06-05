@@ -19,6 +19,9 @@ Sovellus ei ole testattavissa Fly.iossa
 ## Virtuaaliympäristön luominen
 python3 -m venv venv
 
+## Virtuaaliympäristön käynnistys
+source venv/bin/activate
+
 ## Riippuvuuksien asennus
 pip install -r requirements.txt
 
